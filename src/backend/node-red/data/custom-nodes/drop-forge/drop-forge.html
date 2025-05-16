@@ -1,0 +1,28 @@
+<script type="text/javascript">
+    RED.nodes.registerType('drop-forge', {
+        category: "Process",
+        color: "#47919e",
+        defaults: {
+            name: { value: "" }
+        },
+        inputs: 1,
+        outputs: 1,
+        icon: "font-awesome/fa-industry",
+        label: function() {
+            return this.name || "Drop-forge";
+        },
+        paletteLabel: "Drop-forge",
+        description: "Drop-forge: Forging with a drop hammer"
+    });
+</script>
+
+<script type="text/html" data-template-name="drop-forge">
+    <div class="form-row">
+        <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+    <div class="form-row">
+        <label><i class="fa fa-info-circle"></i> Beschreibung</label>
+        <div style="margin: 5px 0; color: #666;">Drop-forge: Forging with a drop hammer</div>
+    </div>
+</script>

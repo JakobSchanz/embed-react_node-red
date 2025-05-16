@@ -1,0 +1,28 @@
+<script type="text/javascript">
+    RED.nodes.registerType('labour', {
+        category: "Resources",
+        color: "#83b87f",
+        defaults: {
+            name: { value: "" }
+        },
+        inputs: 1,
+        outputs: 1,
+        icon: "font-awesome/fa-wrench",
+        label: function() {
+            return this.name || "Labour";
+        },
+        paletteLabel: "Labour",
+        description: "Labour: Workforce involved in production or service tasks"
+    });
+</script>
+
+<script type="text/html" data-template-name="labour">
+    <div class="form-row">
+        <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+    <div class="form-row">
+        <label><i class="fa fa-info-circle"></i> Beschreibung</label>
+        <div style="margin: 5px 0; color: #666;">Labour: Workforce involved in production or service tasks</div>
+    </div>
+</script>

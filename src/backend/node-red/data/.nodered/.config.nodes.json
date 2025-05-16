@@ -1,0 +1,651 @@
+{
+    "node-red": {
+        "name": "node-red",
+        "version": "4.0.9",
+        "local": false,
+        "user": false,
+        "nodes": {
+            "junction": {
+                "name": "junction",
+                "types": [],
+                "enabled": false,
+                "local": false,
+                "user": false,
+                "module": "node-red",
+                "file": "C:\\Users\\Jakob\\Desktop\\home\\projekt\\backend\\node_modules\\@node-red\\nodes\\core\\common\\05-junction.js"
+            },
+            "inject": {
+                "name": "inject",
+                "types": [
+                    "inject"
+                ],
+                "enabled": false,
+                "local": false,
+                "user": false,
+                "module": "node-red",
+                "file": "C:\\Users\\Jakob\\Desktop\\home\\projekt\\backend\\node_modules\\@node-red\\nodes\\core\\common\\20-inject.js"
+            },
+            "debug": {
+                "name": "debug",
+                "types": [
+                    "debug"
+                ],
+                "enabled": false,
+                "local": false,
+                "user": false,
+                "module": "node-red",
+                "file": "C:\\Users\\Jakob\\Desktop\\home\\projekt\\backend\\node_modules\\@node-red\\nodes\\core\\common\\21-debug.js"
+            },
+            "complete": {
+                "name": "complete",
+                "types": [
+                    "complete"
+                ],
+                "enabled": false,
+                "local": false,
+                "user": false,
+                "module": "node-red",
+                "file": "C:\\Users\\Jakob\\Desktop\\home\\projekt\\backend\\node_modules\\@node-red\\nodes\\core\\common\\24-complete.js"
+            },
+            "catch": {
+                "name": "catch",
+                "types": [
+                    "catch"
+                ],
+                "enabled": false,
+                "local": false,
+                "user": false,
+                "module": "node-red",
+                "file": "C:\\Users\\Jakob\\Desktop\\home\\projekt\\backend\\node_modules\\@node-red\\nodes\\core\\common\\25-catch.js"
+            },
+            "status": {
+                "name": "status",
+                "types": [
+                    "status"
+                ],
+                "enabled": false,
+                "local": false,
+                "user": false,
+                "module": "node-red",
+                "file": "C:\\Users\\Jakob\\Desktop\\home\\projekt\\backend\\node_modules\\@node-red\\nodes\\core\\common\\25-status.js"
+            },
+            "link": {
+                "name": "link",
+                "types": [
+                    "link in",
+                    "link out",
+                    "link call"
+                ],
+                "enabled": false,
+                "local": false,
+                "user": false,
+                "module": "node-red",
+                "file": "C:\\Users\\Jakob\\Desktop\\home\\projekt\\backend\\node_modules\\@node-red\\nodes\\core\\common\\60-link.js"
+            },
+            "comment": {
+                "name": "comment",
+                "types": [
+                    "comment"
+                ],
+                "enabled": true,
+                "local": false,
+                "user": false,
+                "module": "node-red",
+                "file": "C:\\Users\\Jakob\\Desktop\\home\\projekt\\backend\\node_modules\\@node-red\\nodes\\core\\common\\90-comment.js"
+            },
+            "global-config": {
+                "name": "global-config",
+                "types": [
+                    "global-config"
+                ],
+                "enabled": false,
+                "local": false,
+                "user": false,
+                "module": "node-red",
+                "file": "C:\\Users\\Jakob\\Desktop\\home\\projekt\\backend\\node_modules\\@node-red\\nodes\\core\\common\\91-global-config.js"
+            },
+            "unknown": {
+                "name": "unknown",
+                "types": [
+                    "unknown"
+                ],
+                "enabled": false,
+                "local": false,
+                "user": false,
+                "module": "node-red",
+                "file": "C:\\Users\\Jakob\\Desktop\\home\\projekt\\backend\\node_modules\\@node-red\\nodes\\core\\common\\98-unknown.js"
+            },
+            "function": {
+                "name": "function",
+                "types": [
+                    "function"
+                ],
+                "enabled": false,
+                "local": false,
+                "user": false,
+                "module": "node-red",
+                "file": "C:\\Users\\Jakob\\Desktop\\home\\projekt\\backend\\node_modules\\@node-red\\nodes\\core\\function\\10-function.js"
+            },
+            "switch": {
+                "name": "switch",
+                "types": [
+                    "switch"
+                ],
+                "enabled": true,
+                "local": false,
+                "user": false,
+                "module": "node-red",
+                "file": "C:\\Users\\Jakob\\Desktop\\home\\projekt\\backend\\node_modules\\@node-red\\nodes\\core\\function\\10-switch.js"
+            },
+            "change": {
+                "name": "change",
+                "types": [
+                    "change"
+                ],
+                "enabled": false,
+                "local": false,
+                "user": false,
+                "module": "node-red",
+                "file": "C:\\Users\\Jakob\\Desktop\\home\\projekt\\backend\\node_modules\\@node-red\\nodes\\core\\function\\15-change.js"
+            },
+            "range": {
+                "name": "range",
+                "types": [
+                    "range"
+                ],
+                "enabled": false,
+                "local": false,
+                "user": false,
+                "module": "node-red",
+                "file": "C:\\Users\\Jakob\\Desktop\\home\\projekt\\backend\\node_modules\\@node-red\\nodes\\core\\function\\16-range.js"
+            },
+            "template": {
+                "name": "template",
+                "types": [
+                    "template"
+                ],
+                "enabled": false,
+                "local": false,
+                "user": false,
+                "module": "node-red",
+                "file": "C:\\Users\\Jakob\\Desktop\\home\\projekt\\backend\\node_modules\\@node-red\\nodes\\core\\function\\80-template.js"
+            },
+            "delay": {
+                "name": "delay",
+                "types": [
+                    "delay"
+                ],
+                "enabled": false,
+                "local": false,
+                "user": false,
+                "module": "node-red",
+                "file": "C:\\Users\\Jakob\\Desktop\\home\\projekt\\backend\\node_modules\\@node-red\\nodes\\core\\function\\89-delay.js"
+            },
+            "trigger": {
+                "name": "trigger",
+                "types": [
+                    "trigger"
+                ],
+                "enabled": false,
+                "local": false,
+                "user": false,
+                "module": "node-red",
+                "file": "C:\\Users\\Jakob\\Desktop\\home\\projekt\\backend\\node_modules\\@node-red\\nodes\\core\\function\\89-trigger.js"
+            },
+            "exec": {
+                "name": "exec",
+                "types": [
+                    "exec"
+                ],
+                "enabled": false,
+                "local": false,
+                "user": false,
+                "module": "node-red",
+                "file": "C:\\Users\\Jakob\\Desktop\\home\\projekt\\backend\\node_modules\\@node-red\\nodes\\core\\function\\90-exec.js"
+            },
+            "rbe": {
+                "name": "rbe",
+                "types": [
+                    "rbe"
+                ],
+                "enabled": false,
+                "local": false,
+                "user": false,
+                "module": "node-red",
+                "file": "C:\\Users\\Jakob\\Desktop\\home\\projekt\\backend\\node_modules\\@node-red\\nodes\\core\\function\\rbe.js"
+            },
+            "tls": {
+                "name": "tls",
+                "types": [
+                    "tls-config"
+                ],
+                "enabled": false,
+                "local": false,
+                "user": false,
+                "module": "node-red",
+                "file": "C:\\Users\\Jakob\\Desktop\\home\\projekt\\backend\\node_modules\\@node-red\\nodes\\core\\network\\05-tls.js"
+            },
+            "httpproxy": {
+                "name": "httpproxy",
+                "types": [
+                    "http proxy"
+                ],
+                "enabled": false,
+                "local": false,
+                "user": false,
+                "module": "node-red",
+                "file": "C:\\Users\\Jakob\\Desktop\\home\\projekt\\backend\\node_modules\\@node-red\\nodes\\core\\network\\06-httpproxy.js"
+            },
+            "mqtt": {
+                "name": "mqtt",
+                "types": [
+                    "mqtt in",
+                    "mqtt out",
+                    "mqtt-broker"
+                ],
+                "enabled": false,
+                "local": false,
+                "user": false,
+                "module": "node-red",
+                "file": "C:\\Users\\Jakob\\Desktop\\home\\projekt\\backend\\node_modules\\@node-red\\nodes\\core\\network\\10-mqtt.js"
+            },
+            "httpin": {
+                "name": "httpin",
+                "types": [
+                    "http in",
+                    "http response"
+                ],
+                "enabled": false,
+                "local": false,
+                "user": false,
+                "module": "node-red",
+                "file": "C:\\Users\\Jakob\\Desktop\\home\\projekt\\backend\\node_modules\\@node-red\\nodes\\core\\network\\21-httpin.js"
+            },
+            "httprequest": {
+                "name": "httprequest",
+                "types": [
+                    "http request"
+                ],
+                "enabled": false,
+                "local": false,
+                "user": false,
+                "module": "node-red",
+                "file": "C:\\Users\\Jakob\\Desktop\\home\\projekt\\backend\\node_modules\\@node-red\\nodes\\core\\network\\21-httprequest.js"
+            },
+            "websocket": {
+                "name": "websocket",
+                "types": [
+                    "websocket in",
+                    "websocket out",
+                    "websocket-listener",
+                    "websocket-client"
+                ],
+                "enabled": false,
+                "local": false,
+                "user": false,
+                "module": "node-red",
+                "file": "C:\\Users\\Jakob\\Desktop\\home\\projekt\\backend\\node_modules\\@node-red\\nodes\\core\\network\\22-websocket.js"
+            },
+            "tcpin": {
+                "name": "tcpin",
+                "types": [
+                    "tcp in",
+                    "tcp out",
+                    "tcp request"
+                ],
+                "enabled": false,
+                "local": false,
+                "user": false,
+                "module": "node-red",
+                "file": "C:\\Users\\Jakob\\Desktop\\home\\projekt\\backend\\node_modules\\@node-red\\nodes\\core\\network\\31-tcpin.js"
+            },
+            "udp": {
+                "name": "udp",
+                "types": [
+                    "udp in",
+                    "udp out"
+                ],
+                "enabled": false,
+                "local": false,
+                "user": false,
+                "module": "node-red",
+                "file": "C:\\Users\\Jakob\\Desktop\\home\\projekt\\backend\\node_modules\\@node-red\\nodes\\core\\network\\32-udp.js"
+            },
+            "CSV": {
+                "name": "CSV",
+                "types": [
+                    "csv"
+                ],
+                "enabled": false,
+                "local": false,
+                "user": false,
+                "module": "node-red",
+                "file": "C:\\Users\\Jakob\\Desktop\\home\\projekt\\backend\\node_modules\\@node-red\\nodes\\core\\parsers\\70-CSV.js"
+            },
+            "HTML": {
+                "name": "HTML",
+                "types": [
+                    "html"
+                ],
+                "enabled": false,
+                "local": false,
+                "user": false,
+                "module": "node-red",
+                "file": "C:\\Users\\Jakob\\Desktop\\home\\projekt\\backend\\node_modules\\@node-red\\nodes\\core\\parsers\\70-HTML.js"
+            },
+            "JSON": {
+                "name": "JSON",
+                "types": [
+                    "json"
+                ],
+                "enabled": false,
+                "local": false,
+                "user": false,
+                "module": "node-red",
+                "file": "C:\\Users\\Jakob\\Desktop\\home\\projekt\\backend\\node_modules\\@node-red\\nodes\\core\\parsers\\70-JSON.js"
+            },
+            "XML": {
+                "name": "XML",
+                "types": [
+                    "xml"
+                ],
+                "enabled": false,
+                "local": false,
+                "user": false,
+                "module": "node-red",
+                "file": "C:\\Users\\Jakob\\Desktop\\home\\projekt\\backend\\node_modules\\@node-red\\nodes\\core\\parsers\\70-XML.js"
+            },
+            "YAML": {
+                "name": "YAML",
+                "types": [
+                    "yaml"
+                ],
+                "enabled": false,
+                "local": false,
+                "user": false,
+                "module": "node-red",
+                "file": "C:\\Users\\Jakob\\Desktop\\home\\projekt\\backend\\node_modules\\@node-red\\nodes\\core\\parsers\\70-YAML.js"
+            },
+            "split": {
+                "name": "split",
+                "types": [
+                    "split",
+                    "join"
+                ],
+                "enabled": false,
+                "local": false,
+                "user": false,
+                "module": "node-red",
+                "file": "C:\\Users\\Jakob\\Desktop\\home\\projekt\\backend\\node_modules\\@node-red\\nodes\\core\\sequence\\17-split.js"
+            },
+            "sort": {
+                "name": "sort",
+                "types": [
+                    "sort"
+                ],
+                "enabled": false,
+                "local": false,
+                "user": false,
+                "module": "node-red",
+                "file": "C:\\Users\\Jakob\\Desktop\\home\\projekt\\backend\\node_modules\\@node-red\\nodes\\core\\sequence\\18-sort.js"
+            },
+            "batch": {
+                "name": "batch",
+                "types": [
+                    "batch"
+                ],
+                "enabled": false,
+                "local": false,
+                "user": false,
+                "module": "node-red",
+                "file": "C:\\Users\\Jakob\\Desktop\\home\\projekt\\backend\\node_modules\\@node-red\\nodes\\core\\sequence\\19-batch.js"
+            },
+            "file": {
+                "name": "file",
+                "types": [
+                    "file",
+                    "file in"
+                ],
+                "enabled": false,
+                "local": false,
+                "user": false,
+                "module": "node-red",
+                "file": "C:\\Users\\Jakob\\Desktop\\home\\projekt\\backend\\node_modules\\@node-red\\nodes\\core\\storage\\10-file.js"
+            },
+            "watch": {
+                "name": "watch",
+                "types": [
+                    "watch"
+                ],
+                "enabled": false,
+                "local": false,
+                "user": false,
+                "module": "node-red",
+                "file": "C:\\Users\\Jakob\\Desktop\\home\\projekt\\backend\\node_modules\\@node-red\\nodes\\core\\storage\\23-watch.js"
+            },
+            "ball-mill": {
+                "name": "ball-mill",
+                "types": [
+                    "ball-mill"
+                ],
+                "enabled": true,
+                "local": false,
+                "user": false,
+                "module": "node-red",
+                "file": "C:\\Users\\Jakob\\Desktop\\home\\projekt\\backend\\data\\custom-nodes\\ball-mill\\ball-mill.js"
+            },
+            "blow-molding": {
+                "name": "blow-molding",
+                "types": [
+                    "blow-molding"
+                ],
+                "enabled": true,
+                "local": false,
+                "user": false,
+                "module": "node-red",
+                "file": "C:\\Users\\Jakob\\Desktop\\home\\projekt\\backend\\data\\custom-nodes\\blow-molding\\blow-molding.js"
+            },
+            "chemical-vapor-deposition-": {
+                "name": "chemical-vapor-deposition-",
+                "types": [
+                    "chemical-vapor-deposition-"
+                ],
+                "enabled": true,
+                "local": false,
+                "user": false,
+                "module": "node-red",
+                "file": "C:\\Users\\Jakob\\Desktop\\home\\projekt\\backend\\data\\custom-nodes\\chemical-vapor-deposition-\\chemical-vapor-deposition-.js"
+            },
+            "drop-forge": {
+                "name": "drop-forge",
+                "types": [
+                    "drop-forge"
+                ],
+                "enabled": true,
+                "local": false,
+                "user": false,
+                "module": "node-red",
+                "file": "C:\\Users\\Jakob\\Desktop\\home\\projekt\\backend\\data\\custom-nodes\\drop-forge\\drop-forge.js"
+            },
+            "extrusion": {
+                "name": "extrusion",
+                "types": [
+                    "extrusion"
+                ],
+                "enabled": true,
+                "local": false,
+                "user": false,
+                "module": "node-red",
+                "file": "C:\\Users\\Jakob\\Desktop\\home\\projekt\\backend\\data\\custom-nodes\\extrusion\\extrusion.js"
+            },
+            "flux-cored": {
+                "name": "flux-cored",
+                "types": [
+                    "flux-cored"
+                ],
+                "enabled": true,
+                "local": false,
+                "user": false,
+                "module": "node-red",
+                "file": "C:\\Users\\Jakob\\Desktop\\home\\projekt\\backend\\data\\custom-nodes\\flux-cored\\flux-cored.js"
+            },
+            "hammer-mill-": {
+                "name": "hammer-mill-",
+                "types": [
+                    "hammer-mill-"
+                ],
+                "enabled": true,
+                "local": false,
+                "user": false,
+                "module": "node-red",
+                "file": "C:\\Users\\Jakob\\Desktop\\home\\projekt\\backend\\data\\custom-nodes\\hammer-mill-\\hammer-mill-.js"
+            },
+            "inkjet-printing": {
+                "name": "inkjet-printing",
+                "types": [
+                    "inkjet-printing"
+                ],
+                "enabled": true,
+                "local": false,
+                "user": false,
+                "module": "node-red",
+                "file": "C:\\Users\\Jakob\\Desktop\\home\\projekt\\backend\\data\\custom-nodes\\inkjet-printing\\inkjet-printing.js"
+            },
+            "labour": {
+                "name": "labour",
+                "types": [
+                    "labour"
+                ],
+                "enabled": true,
+                "local": false,
+                "user": false,
+                "module": "node-red",
+                "file": "C:\\Users\\Jakob\\Desktop\\home\\projekt\\backend\\data\\custom-nodes\\labour\\labour.js"
+            },
+            "machine": {
+                "name": "machine",
+                "types": [
+                    "machine"
+                ],
+                "enabled": true,
+                "local": false,
+                "user": false,
+                "module": "node-red",
+                "file": "C:\\Users\\Jakob\\Desktop\\home\\projekt\\backend\\data\\custom-nodes\\machine\\machine.js"
+            },
+            "plastic-mold-casting--": {
+                "name": "plastic-mold-casting--",
+                "types": [
+                    "plastic-mold-casting--"
+                ],
+                "enabled": true,
+                "local": false,
+                "user": false,
+                "module": "node-red",
+                "file": "C:\\Users\\Jakob\\Desktop\\home\\projekt\\backend\\data\\custom-nodes\\plastic-mold-casting--\\plastic-mold-casting--.js"
+            },
+            "press": {
+                "name": "press",
+                "types": [
+                    "press"
+                ],
+                "enabled": true,
+                "local": false,
+                "user": false,
+                "module": "node-red",
+                "file": "C:\\Users\\Jakob\\Desktop\\home\\projekt\\backend\\data\\custom-nodes\\press\\press.js"
+            },
+            "resin-casting": {
+                "name": "resin-casting",
+                "types": [
+                    "resin-casting"
+                ],
+                "enabled": true,
+                "local": false,
+                "user": false,
+                "module": "node-red",
+                "file": "C:\\Users\\Jakob\\Desktop\\home\\projekt\\backend\\data\\custom-nodes\\resin-casting\\resin-casting.js"
+            },
+            "ring": {
+                "name": "ring",
+                "types": [
+                    "ring"
+                ],
+                "enabled": true,
+                "local": false,
+                "user": false,
+                "module": "node-red",
+                "file": "C:\\Users\\Jakob\\Desktop\\home\\projekt\\backend\\data\\custom-nodes\\ring\\ring.js"
+            },
+            "selective-laser-sintering": {
+                "name": "selective-laser-sintering",
+                "types": [
+                    "selective-laser-sintering"
+                ],
+                "enabled": true,
+                "local": false,
+                "user": false,
+                "module": "node-red",
+                "file": "C:\\Users\\Jakob\\Desktop\\home\\projekt\\backend\\data\\custom-nodes\\selective-laser-sintering\\selective-laser-sintering.js"
+            },
+            "shape": {
+                "name": "shape",
+                "types": [
+                    "shape"
+                ],
+                "enabled": true,
+                "local": false,
+                "user": false,
+                "module": "node-red",
+                "file": "C:\\Users\\Jakob\\Desktop\\home\\projekt\\backend\\data\\custom-nodes\\shape\\shape.js"
+            },
+            "spark-plasma-sintering-": {
+                "name": "spark-plasma-sintering-",
+                "types": [
+                    "spark-plasma-sintering-"
+                ],
+                "enabled": true,
+                "local": false,
+                "user": false,
+                "module": "node-red",
+                "file": "C:\\Users\\Jakob\\Desktop\\home\\projekt\\backend\\data\\custom-nodes\\spark-plasma-sintering-\\spark-plasma-sintering-.js"
+            },
+            "submerged": {
+                "name": "submerged",
+                "types": [
+                    "submerged"
+                ],
+                "enabled": true,
+                "local": false,
+                "user": false,
+                "module": "node-red",
+                "file": "C:\\Users\\Jakob\\Desktop\\home\\projekt\\backend\\data\\custom-nodes\\submerged\\submerged.js"
+            }
+        }
+    },
+    "node-red-contrib-os": {
+        "name": "node-red-contrib-os",
+        "version": "0.2.1",
+        "local": false,
+        "user": false,
+        "nodes": {
+            "os": {
+                "name": "os",
+                "types": [
+                    "OS",
+                    "Drives",
+                    "Uptime",
+                    "CPUs",
+                    "Loadavg",
+                    "Memory",
+                    "NetworkIntf"
+                ],
+                "enabled": false,
+                "local": false,
+                "user": false,
+                "module": "node-red-contrib-os",
+                "file": "C:\\Users\\Jakob\\node_modules\\node-red-contrib-os\\os\\os.js"
+            }
+        }
+    }
+}

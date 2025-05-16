@@ -1,0 +1,28 @@
+<script type="text/javascript">
+    RED.nodes.registerType('machine', {
+        category: "Resources",
+        color: "#83b87f",
+        defaults: {
+            name: { value: "" }
+        },
+        inputs: 1,
+        outputs: 1,
+        icon: "font-awesome/fa-wrench",
+        label: function() {
+            return this.name || "Machine";
+        },
+        paletteLabel: "Machine",
+        description: "Machine: Equipment or tools used for automated or mechanical processes"
+    });
+</script>
+
+<script type="text/html" data-template-name="machine">
+    <div class="form-row">
+        <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+    <div class="form-row">
+        <label><i class="fa fa-info-circle"></i> Beschreibung</label>
+        <div style="margin: 5px 0; color: #666;">Machine: Equipment or tools used for automated or mechanical processes</div>
+    </div>
+</script>

@@ -1,0 +1,28 @@
+<script type="text/javascript">
+    RED.nodes.registerType('spark-plasma-sintering-', {
+        category: "Process",
+        color: "#47919e",
+        defaults: {
+            name: { value: "" }
+        },
+        inputs: 1,
+        outputs: 1,
+        icon: "font-awesome/fa-industry",
+        label: function() {
+            return this.name || "Spark-plasma-sintering ";
+        },
+        paletteLabel: "Spark-plasma-sintering ",
+        description: "Spark-plasma-sintering : Spark plasma sintering process"
+    });
+</script>
+
+<script type="text/html" data-template-name="spark-plasma-sintering-">
+    <div class="form-row">
+        <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+    <div class="form-row">
+        <label><i class="fa fa-info-circle"></i> Beschreibung</label>
+        <div style="margin: 5px 0; color: #666;">Spark-plasma-sintering : Spark plasma sintering process</div>
+    </div>
+</script>
