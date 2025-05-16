@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect  } from "react";
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
 import { TextField, Button } from "@material-ui/core";
@@ -17,6 +17,10 @@ import styles from "assets/jss/material-dashboard-react/views/nodeRedStyle.js";
 const useStyles = makeStyles(styles);
 
 export default function NodeRed() {
+    const existingFields = useRef([]);
+    useEffect(() => {
+        addFlowFields();
+    }, []);
     const flowNameRef = useRef();
     const classes = useStyles();
 
@@ -35,32 +39,46 @@ export default function NodeRed() {
         }
 
         createNewFlow(data, id, flowName);
-        const newFlow = (
-            <GridItem xs="auto" sm="auto" md="auto" lg="auto" key={id}>
-                <Card>
-                    <CardBody>
-                        <div>
-                            <Button
-                                variant="contained"
-                                color="primary"
-                                style={{ marginRight: "5px" }}
-                                onClick={() => alert("Open Flow")}
-                            >
-                                {flowName}
-                            </Button>
-                            <Button
-                                variant="contained"
-                                color="secondary"
-                                onClick={() => alert("Settings")}
-                            >
-                                <SettingsIcon />
-                            </Button>
-                        </div>
-                    </CardBody>
-                </Card>
-            </GridItem>
-        );
-        setFlows((prev) => [...prev, newFlow]);
+        addFlowFields();
+    }
+
+    async function addFlowFields() {
+        const data = await getExistingFlowData();
+        const tabs = data.filter(flow => flow.type === "tab");
+
+        for (const flow of tabs) {
+            if (!existingFields.current.includes(flow.id)) {
+                const newFlow = (
+                    <GridItem xs="auto" sm="auto" md="auto" lg="auto" key={flow.id}>
+                        <Card>
+                            <CardBody>
+                                <div>
+                                    <Button
+                                        variant="contained"
+                                        color="primary"
+                                        style={{ marginRight: "5px" }}
+                                        onClick={() => handleOpenFlow(flow.id)}
+                                    >
+                                        {flow.label}
+                                    </Button>
+
+                                    <Button
+                                        variant="contained"
+                                        color="secondary"
+                                        onClick={() => alert("Settings")}
+                                    >
+                                        <SettingsIcon />
+                                    </Button>
+                                </div>
+                            </CardBody>
+                        </Card>
+                    </GridItem>
+                );
+
+                existingFields.current.push(flow.id);
+                setFlows((prev) => [...prev, newFlow]);
+            }
+        }
     }
 
     function generateId() {
@@ -100,6 +118,10 @@ export default function NodeRed() {
         } else {
             console.error("Fehler beim Erstellen:", update.status);
         }
+    }
+
+    async function handleOpenFlow(flowID) {
+        window.open(`http://localhost:8000/#flow/${flowID}`, "_blank");
     }
 
     return (
