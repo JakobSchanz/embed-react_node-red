@@ -22,31 +22,21 @@ export default function NodeRed() {
 
     const [flows, setFlows] = useState([]);
 
-    async function getExistingFlowData (){
-        const res = await fetch("http://localhost:8000/flows");
-        const data = await res.json();
-        return data;
-    } 
+
 
     async function handleAddFlow() {
         const data = await getExistingFlowData();
         const flowName = flowNameRef.current.value;
+        const id = await generateId();
 
-        const existigFlowNames =[];
-
-        for (const flow of data) {
-            if (flow.type === "tab") {
-                existigFlowNames.push(flow.label)
-            }
-        }
-
-        if (flowName === "" || existigFlowNames.includes(flowName)) {
+        if (flowName === "") {
             alert("Name incorect");
             return;
         }
 
+        createNewFlow(data, id, flowName);
         const newFlow = (
-            <GridItem xs="auto" sm="auto" md="auto" lg="auto" key={flowName}>
+            <GridItem xs="auto" sm="auto" md="auto" lg="auto" key={id}>
                 <Card>
                     <CardBody>
                         <div>
@@ -71,6 +61,45 @@ export default function NodeRed() {
             </GridItem>
         );
         setFlows((prev) => [...prev, newFlow]);
+    }
+
+    function generateId() {
+        return Math.random().toString(16).substr(2, 8);
+    }
+
+    async function getExistingFlowData (){
+        const res = await fetch("http://localhost:8000/flows");
+        const data = await res.json();
+        return data;
+    } 
+
+    async function createNewFlow(data, id, flowName) {
+        const newFlow = {
+            id: id,
+            type: "tab",
+            label: flowName,
+            disabled: false,
+            info: "",
+            env: []        
+        }
+        data.push(newFlow);
+        addNewFlow(data);
+    }
+
+    async function addNewFlow(data) {
+        const update = await fetch("http://localhost:8000/flows", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(data)
+        });
+
+        if (update.ok) {
+            console.log("Neuer Flow erstellt!");
+        } else {
+            console.error("Fehler beim Erstellen:", update.status);
+        }
     }
 
     return (
