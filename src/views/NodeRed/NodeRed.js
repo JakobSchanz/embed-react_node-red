@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
-import { TextField, Button, Popover } from "@material-ui/core"; // <- Popover importiert
+import { TextField, Button, Popover } from "@material-ui/core"; 
 
 import SettingsIcon from "@material-ui/icons/Settings";
 import CloseIcon from "@material-ui/icons/Close";
@@ -26,6 +26,8 @@ export default function NodeRed() {
 
     const flowNameRef = useRef();
     const classes = useStyles();
+    const renameRef = useRef();
+
 
     const [flows, setFlows] = useState([]);
 
@@ -41,6 +43,38 @@ export default function NodeRed() {
         setAnchorEl(null);
         setCurrentFlow(null);
     };
+
+    async function handleRename () {
+        const newName = renameRef.current.value;
+
+        if (!newName || !currentFlow || !currentFlow.id) return;
+
+        const id = currentFlow.id;
+        const data = await getExistingFlowData();
+
+        const updatedData = data.map(flow =>
+            flow.id === id ? { ...flow, label: newName } : flow
+        );
+
+        handleSettingsClose();
+
+        await addNewFlow(updatedData);
+        await addFlowFields(true);
+    }
+
+    async function handleDelete () {
+        if (!currentFlow || !currentFlow.id) return;
+
+        const id = currentFlow.id;
+        const data = await getExistingFlowData();
+        const updatedData = data.filter(flow => flow.id !== id);
+
+        handleSettingsClose();
+        await addNewFlow(updatedData);
+        await addFlowFields(true);
+
+
+    }
 
     const open = Boolean(anchorEl);
     const popoverId = open ? "settings-popover" : undefined;
@@ -59,9 +93,14 @@ export default function NodeRed() {
         addFlowFields();
     }
 
-    async function addFlowFields() {
+    async function addFlowFields(forceRefresh = false) {
         const data = await getExistingFlowData();
         const tabs = data.filter((flow) => flow.type === "tab");
+
+        if (forceRefresh) {
+            existingFields.current = [];
+            setFlows([]);
+        }
 
         for (const flow of tabs) {
             if (!existingFields.current.includes(flow.id)) {
@@ -254,12 +293,13 @@ export default function NodeRed() {
                             label="Edit Name"
                             fullWidth
                             defaultValue={currentFlow && currentFlow.label}
+                            inputRef={renameRef}
                         />
                         <Button
                             style={{ marginTop: "12px", marginLeft: "7px" }}
                             variant="contained"
                             color="primary"
-                            onClick={handleSettingsClose}
+                            onClick= {handleRename}
                         >
                             Save
                         </Button>
@@ -269,7 +309,7 @@ export default function NodeRed() {
                         style={{ marginTop: "12px", width: "100%" }}
                         variant="contained"
                         color="primary"
-                        onClick={handleSettingsClose}
+                        onClick={handleDelete}
                     >
                         Delete
                     </Button>
