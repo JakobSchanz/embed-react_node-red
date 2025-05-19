@@ -1,9 +1,10 @@
-import React, { useState, useRef, useEffect  } from "react";
+import React, { useState, useRef, useEffect } from "react";
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
-import { TextField, Button } from "@material-ui/core";
+import { TextField, Button, Popover } from "@material-ui/core"; // <- Popover importiert
 
-import SettingsIcon from '@material-ui/icons/Settings';
+import SettingsIcon from "@material-ui/icons/Settings";
+import CloseIcon from "@material-ui/icons/Close";
 
 // core components
 import GridItem from "components/Grid/GridItem.js";
@@ -18,15 +19,31 @@ const useStyles = makeStyles(styles);
 
 export default function NodeRed() {
     const existingFields = useRef([]);
+
     useEffect(() => {
         addFlowFields();
     }, []);
+
     const flowNameRef = useRef();
     const classes = useStyles();
 
     const [flows, setFlows] = useState([]);
 
+    const [anchorEl, setAnchorEl] = useState(null);
+    const [currentFlow, setCurrentFlow] = useState(null);
 
+    const handleSettingsClick = (event, flow) => {
+        setAnchorEl(event.currentTarget);
+        setCurrentFlow(flow);
+    };
+
+    const handleSettingsClose = () => {
+        setAnchorEl(null);
+        setCurrentFlow(null);
+    };
+
+    const open = Boolean(anchorEl);
+    const popoverId = open ? "settings-popover" : undefined;
 
     async function handleAddFlow() {
         const data = await getExistingFlowData();
@@ -44,12 +61,19 @@ export default function NodeRed() {
 
     async function addFlowFields() {
         const data = await getExistingFlowData();
-        const tabs = data.filter(flow => flow.type === "tab");
+        const tabs = data.filter((flow) => flow.type === "tab");
 
         for (const flow of tabs) {
             if (!existingFields.current.includes(flow.id)) {
                 const newFlow = (
-                    <GridItem xs="auto" sm="auto" md="auto" lg="auto" key={flow.id}>
+                    <GridItem
+                        xs="auto"
+                        sm="auto"
+                        md="auto"
+                        lg="auto"
+                        key={flow.id}
+                        style={{ height: "105px" }}
+                    >
                         <Card>
                             <CardBody>
                                 <div>
@@ -65,7 +89,7 @@ export default function NodeRed() {
                                     <Button
                                         variant="contained"
                                         color="secondary"
-                                        onClick={() => alert("Settings")}
+                                        onClick={(e) => handleSettingsClick(e, flow)} 
                                     >
                                         <SettingsIcon />
                                     </Button>
@@ -85,11 +109,11 @@ export default function NodeRed() {
         return Math.random().toString(16).substr(2, 8);
     }
 
-    async function getExistingFlowData (){
+    async function getExistingFlowData() {
         const res = await fetch("http://localhost:8000/flows");
         const data = await res.json();
         return data;
-    } 
+    }
 
     async function createNewFlow(data, id, flowName) {
         const newFlow = {
@@ -98,8 +122,8 @@ export default function NodeRed() {
             label: flowName,
             disabled: false,
             info: "",
-            env: []        
-        }
+            env: [],
+        };
         data.push(newFlow);
         addNewFlow(data);
     }
@@ -108,15 +132,13 @@ export default function NodeRed() {
         const update = await fetch("http://localhost:8000/flows", {
             method: "POST",
             headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(data)
+            "Content-Type": "application/json",
+        },
+            body: JSON.stringify(data),
         });
 
-        if (update.ok) {
-            console.log("Neuer Flow erstellt!");
-        } else {
-            console.error("Fehler beim Erstellen:", update.status);
+        if (!update.ok) {
+            console.error("Error when creating:", update.status);
         }
     }
 
@@ -139,12 +161,19 @@ export default function NodeRed() {
                         <GridContainer>
                             <GridItem xs={12} sm={12} md={12}>
                                 <Card>
-                                    <CardHeader plain color="primary" className={classes.smallCardHeader}>
+                                    <CardHeader
+                                        plain
+                                        color="primary"
+                                        className={classes.smallCardHeader}
+                                    >
                                         <h4 className={classes.cardTitleBlack}>Settings</h4>
                                     </CardHeader>
 
                                     <CardBody>
-                                        <div id="node-red-settings" style={{ display: "flex", alignItems: "center" }}>
+                                        <div
+                                            id="node-red-settings"
+                                            style={{ display: "flex", alignItems: "center" }}
+                                        >
                                             <TextField
                                                 inputRef={flowNameRef}
                                                 label="Flow Name"
@@ -153,12 +182,12 @@ export default function NodeRed() {
                                                 margin="normal"
                                                 InputProps={{
                                                     style: {
-                                                    height: "40px", 
-                                                    flex: 1, 
-                                                },
+                                                        height: "40px",
+                                                        flex: 1,
+                                                    },
                                                 }}
                                                 style={{
-                                                    marginRight: "10px", 
+                                                    marginRight: "10px",
                                                 }}
                                             />
 
@@ -168,7 +197,7 @@ export default function NodeRed() {
                                                 color="primary"
                                                 onClick={handleAddFlow}
                                                 style={{
-                                                    height: "40px",
+                                                height: "40px",
                                                 }}
                                             >
                                                 Add Flow
@@ -185,6 +214,67 @@ export default function NodeRed() {
                     </Card>
                 </GridItem>
             </GridContainer>
+
+            <Popover
+                id={popoverId}
+                open={open}
+                anchorEl={anchorEl}
+                onClose={handleSettingsClose}
+                anchorOrigin={{
+                    vertical: "bottom",
+                    horizontal: "left",
+                }}
+                transformOrigin={{
+                    vertical: "top",
+                    horizontal: "left",
+                }}
+            >
+                <div style={{ padding: "16px", minWidth: "200px" }}>
+                    <div style={{ display: "flex", justifyContent: "space-between" }}>
+                        <p>
+                            <strong>Settings for:</strong> {currentFlow && currentFlow.label}
+                        </p>
+
+                        <Button
+                            style={{ 
+                                width: "24px",
+                                height: "24px",
+                                padding: "6px" 
+                            }}
+                            variant="contained"
+                            color="primary"
+                            onClick={handleSettingsClose}
+                        >
+                            <CloseIcon />
+                        </Button>
+                    </div>
+                    
+                    <div style={{display: "flex"}}>
+                        <TextField
+                            label="Edit Name"
+                            fullWidth
+                            defaultValue={currentFlow && currentFlow.label}
+                        />
+                        <Button
+                            style={{ marginTop: "12px", marginLeft: "7px" }}
+                            variant="contained"
+                            color="primary"
+                            onClick={handleSettingsClose}
+                        >
+                            Save
+                        </Button>
+                    </div>
+                    
+                    <Button
+                        style={{ marginTop: "12px", width: "100%" }}
+                        variant="contained"
+                        color="primary"
+                        onClick={handleSettingsClose}
+                    >
+                        Delete
+                    </Button>
+                </div>
+            </Popover>
         </div>
     );
 }
