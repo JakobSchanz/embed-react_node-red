@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
 import { TextField, Button, Popover } from "@material-ui/core"; 
+import Autocomplete from "@material-ui/lab/Autocomplete";
 
 import SettingsIcon from "@material-ui/icons/Settings";
 import CloseIcon from "@material-ui/icons/Close";
@@ -14,6 +15,14 @@ import CardHeader from "components/Card/CardHeader.js";
 import CardBody from "components/Card/CardBody.js";
 
 import styles from "assets/jss/material-dashboard-react/views/nodeRedStyle.js";
+
+
+import {
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions
+} from "@material-ui/core";
 
 const useStyles = makeStyles(styles);
 
@@ -33,6 +42,12 @@ export default function NodeRed() {
 
     const [anchorEl, setAnchorEl] = useState(null);
     const [currentFlow, setCurrentFlow] = useState(null);
+    
+    const [options, setOptions] = useState(["Option A", "Option B"]);
+    const [value, setValue] = useState(null);
+    const [openDialog, setOpenDialog] = useState(false);
+    const [newOption, setNewOption] = useState("");
+    const customOptions = [...options, "__add_new__"];
 
     const handleSettingsClick = (event, flow) => {
         setAnchorEl(event.currentTarget);
@@ -211,36 +226,158 @@ export default function NodeRed() {
                                     <CardBody>
                                         <div
                                             id="node-red-settings"
-                                            style={{ display: "flex", alignItems: "center" }}
+                                            style={{ 
+                                                display: "flex", 
+                                                alignItems: "center",
+                                            }}
                                         >
-                                            <TextField
-                                                inputRef={flowNameRef}
-                                                label="Flow Name"
-                                                variant="outlined"
-                                                size="small"
-                                                margin="normal"
-                                                InputProps={{
-                                                    style: {
-                                                        height: "40px",
-                                                        flex: 1,
-                                                    },
-                                                }}
-                                                style={{
-                                                    marginRight: "10px",
-                                                }}
-                                            />
+                                            <div style={{ display: "flex", alignItems: "center" }}>
+                                                <TextField
+                                                    inputRef={flowNameRef}
+                                                    label="Flow Name"
+                                                    variant="outlined"
+                                                    size="small"
+                                                    InputProps={{
+                                                        style: {
+                                                            height: "40px",
+                                                            flex: 1,
+                                                        },
+                                                    }}
+                                                    style={{
+                                                        marginRight: "10px",
+                                                    }}
+                                                />
 
-                                            <Button
-                                                id="add-new-flow"
-                                                variant="contained"
-                                                color="primary"
-                                                onClick={handleAddFlow}
-                                                style={{
-                                                height: "40px",
-                                                }}
-                                            >
-                                                Add Flow
-                                            </Button>
+                                                <Button
+                                                    id="add-new-flow"
+                                                    variant="contained"
+                                                    color="primary"
+                                                    onClick={handleAddFlow}
+                                                    size="medium"
+                                                >
+                                                    Add Flow
+                                                </Button>
+                                            </div>
+                                            
+                                            <div style={{ 
+                                                    display: "flex", 
+                                                    alignItems: "center", 
+                                                    justifyContent: "center",
+                                                    backgroundColor: "#eeeeee", 
+                                                    padding: "15px",
+                                                    margin: "10px",
+                                                    borderRadius: "6px",
+                                                }}>
+                                                <Autocomplete
+                                                    style={{
+                                                        width: "150px"
+                                                    }}
+                                                    size="small"
+                                                    value={value}
+                                                    onChange={(event, newValue) => {
+                                                        if (newValue === "__add_new__") {
+                                                            setOpenDialog(true);
+                                                        } else {
+                                                            setValue(newValue);
+                                                        }
+                                                    }}
+                                                    options={customOptions}
+                                                    getOptionLabel={(option) =>
+                                                        option === "__add_new__" ? "Add" : option
+                                                    }
+                                                    renderInput={(params) => (
+                                                        <TextField {...params} label="Category" variant="outlined" />
+                                                    )}
+                                                />      
+                                                <Dialog open={openDialog} onClose={() => setOpenDialog(false)}>
+                                                    <DialogTitle>Add new Category</DialogTitle>
+                                                    <DialogContent>
+                                                        <TextField
+                                                            autoFocus
+                                                            margin="dense"
+                                                            label="new Category"
+                                                            fullWidth
+                                                            value={newOption}
+                                                            onChange={(e) => setNewOption(e.target.value)}
+                                                        />
+                                                    </DialogContent>
+
+                                                    <DialogActions>
+                                                        <Button onClick={() => setOpenDialog(false)} color="primary">
+                                                            Cancel
+                                                        </Button>
+
+                                                        <Button
+                                                            onClick={() => {
+                                                                if (newOption && !options.includes(newOption)) {
+                                                                    setOptions([...options, newOption]);
+                                                                    setValue(newOption);
+                                                                }
+                                                                setNewOption("");
+                                                                setOpenDialog(false);
+                                                            }}
+                                                            color="primary"
+                                                        >
+                                                            Add
+                                                        </Button>
+                                                    </DialogActions>
+                                                </Dialog>
+                                                
+                                                <TextField
+                                                    //inputRef={flowNameRef}
+                                                    label="Node Name"
+                                                    variant="outlined"
+                                                    size="small"
+                                                    InputProps={{
+                                                        style: {
+                                                            height: "40px",
+                                                            flex: 1,
+                                                        },
+                                                    }}
+                                                    style={{
+                                                        width: "150px",
+                                                        marginLeft: "10px",
+                                                    }}
+                                                />
+
+                                                <TextField
+                                                    //inputRef={flowNameRef}
+                                                    label="Node Description"
+                                                    variant="outlined"
+                                                    size="small"
+                                                    InputProps={{
+                                                        style: {
+                                                            height: "40px",
+                                                            flex: 1,
+                                                        },
+                                                    }}
+                                                    style={{
+                                                        width: "150px",
+                                                        marginLeft: "10px",
+                                                    }}
+                                                />
+                                                <Button
+                                                    id="add-new-node"
+                                                    variant="contained"
+                                                    color="primary"
+                                                    //onClick={handleAddFlow}
+                                                    size="medium"
+                                                    style={{marginLeft: "10px",}}
+                                                >
+                                                    Add Node
+                                                </Button>
+
+                                                <Button
+                                                    id="reboot-node-red"
+                                                    variant="contained"
+                                                    color="primary"
+                                                    //onClick={handleAddFlow}
+                                                    size="medium"
+                                                    style={{marginLeft: "10px",}}
+                                                >
+                                                    Reboot node-red
+                                                </Button>
+                                            </div>
                                         </div>
                                     </CardBody>
                                 </Card>
