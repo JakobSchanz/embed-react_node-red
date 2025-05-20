@@ -378,14 +378,6 @@ export default function NodeRed() {
                                                         </Button>
 
                                                         <Button
-                                                            /*onClick={() => {
-                                                                if (newOption && !options.includes(newOption)) {
-                                                                    setOptions([...options, newOption]);
-                                                                    setValue(newOption);
-                                                                }
-                                                                setNewOption("");
-                                                                setOpenDialog(false);
-                                                            }}*/
                                                             onClick = {handleAddCategory}
                                                             color="primary"
                                                         >
