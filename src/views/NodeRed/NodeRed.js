@@ -24,6 +24,8 @@ import CardBody from "components/Card/CardBody.js";
 // Styles
 import styles from "assets/jss/material-dashboard-react/views/nodeRedStyle.js";
 
+import { handleSettingsClose,  handleRename, handleDelete } from '../../backend/node-red/handleFunctionsFlowSettings'
+
 const useStyles = makeStyles(styles);
 
 export default function NodeRed() {
@@ -63,41 +65,6 @@ export default function NodeRed() {
         setAnchorEl(event.currentTarget);
         setCurrentFlow(flow);
     };
-
-    const handleSettingsClose = () => {
-        setAnchorEl(null);
-        setCurrentFlow(null);
-    };
-
-    async function handleRename () {
-        const newName = renameRef.current.value;
-
-        if (!newName || !currentFlow || !currentFlow.id) return;
-
-        const id = currentFlow.id;
-        const data = await getExistingFlowData();
-
-        const updatedData = data.map(flow =>
-            flow.id === id ? { ...flow, label: newName } : flow
-        );
-
-        handleSettingsClose();
-
-        await addNewFlow(updatedData);
-        await addFlowFields(true);
-    }
-
-    async function handleDelete () {
-        if (!currentFlow || !currentFlow.id) return;
-
-        const id = currentFlow.id;
-        const data = await getExistingFlowData();
-        const updatedData = data.filter(flow => flow.id !== id);
-
-        handleSettingsClose();
-        await addNewFlow(updatedData);
-        await addFlowFields(true);
-    }
 
     async function handleRebootNodeRed () {
         const res = await fetch("http://localhost:8000/restart-node-red", {
@@ -296,26 +263,18 @@ export default function NodeRed() {
                                     <CardBody>
                                         <div
                                             id="node-red-settings"
-                                            style={{ 
-                                                display: "flex", 
-                                                alignItems: "center",
-                                            }}
+                                            className={classes.basicStyleOne}
                                         >
-                                            <div style={{ display: "flex", alignItems: "center" }}>
+                                            <div className={classes.basicStyleOne}>
                                                 <TextField
                                                     inputRef={flowNameRef}
                                                     label="Flow Name"
                                                     variant="outlined"
                                                     size="small"
                                                     InputProps={{
-                                                        style: {
-                                                            height: "40px",
-                                                            flex: 1,
-                                                        },
+                                                        style: {height: "40px", flex: 1},
                                                     }}
-                                                    style={{
-                                                        marginRight: "10px",
-                                                    }}
+                                                    style={{ marginRight: "10px"}}
                                                 />
 
                                                 <Button
@@ -329,19 +288,9 @@ export default function NodeRed() {
                                                 </Button>
                                             </div>
                                             
-                                            <div style={{ 
-                                                    display: "flex", 
-                                                    alignItems: "center", 
-                                                    justifyContent: "center",
-                                                    backgroundColor: "#eeeeee", 
-                                                    padding: "15px",
-                                                    margin: "10px",
-                                                    borderRadius: "6px",
-                                                }}>
+                                            <div className={classes.settingsDiv}>
                                                 <Autocomplete
-                                                    style={{
-                                                        width: "150px"
-                                                    }}
+                                                    style={{width: "150px"}}
                                                     size="small"
                                                     value={value}
                                                     onChange={(event, newValue) => {
@@ -458,7 +407,7 @@ export default function NodeRed() {
                 id={popoverId}
                 open={open}
                 anchorEl={anchorEl}
-                onClose={handleSettingsClose}
+                onClick={() => handleSettingsClose(setAnchorEl, setCurrentFlow)}
                 anchorOrigin={{
                     vertical: "bottom",
                     horizontal: "left",
@@ -475,14 +424,10 @@ export default function NodeRed() {
                         </p>
 
                         <Button
-                            style={{ 
-                                width: "24px",
-                                height: "24px",
-                                padding: "6px" 
-                            }}
+                            className={classes.settingsButton}
                             variant="contained"
                             color="primary"
-                            onClick={handleSettingsClose}
+                            onClick={() => handleSettingsClose(setAnchorEl, setCurrentFlow)}
                         >
                             <CloseIcon />
                         </Button>
@@ -499,7 +444,17 @@ export default function NodeRed() {
                             style={{ marginTop: "12px", marginLeft: "7px" }}
                             variant="contained"
                             color="primary"
-                            onClick= {handleRename}
+                            onClick={() =>
+                                handleRename({
+                                renameRef,
+                                currentFlow,
+                                setAnchorEl,
+                                setCurrentFlow,
+                                getExistingFlowData,
+                                addNewFlow,
+                                addFlowFields
+                                })
+                            } 
                         >
                             Save
                         </Button>
@@ -509,7 +464,16 @@ export default function NodeRed() {
                         style={{ marginTop: "12px", width: "100%" }}
                         variant="contained"
                         color="primary"
-                        onClick={handleDelete}
+                        onClick={() =>
+                            handleDelete({
+                            currentFlow,
+                            setAnchorEl,
+                            setCurrentFlow,
+                            getExistingFlowData,
+                            addNewFlow,
+                            addFlowFields
+                            })
+                        }
                     >
                         Delete
                     </Button>

@@ -28,7 +28,7 @@ const dashboardStyle = {
     }
   },
   smallCardHeader: {
-  padding: "3px 6px !important",
+    padding: "3px 6px !important",
     minHeight: "10px",
     maxHeight: "35px", 
     overflow: "hidden", 
@@ -40,7 +40,24 @@ const dashboardStyle = {
       textOverflow: "ellipsis",   
     },
   },
-
+  basicStyleOne: {
+    display: "flex", 
+    alignItems: "center",
+  },
+  settingsDiv: {
+    display: "flex", 
+    alignItems: "center", 
+    justifyContent: "center",
+    backgroundColor: "#eeeeee", 
+    padding: "15px",
+    margin: "10px",
+    borderRadius: "6px",
+  },
+  settingsButton: {
+    width: "24px",
+    height: "24px",
+    padding: "6px" 
+  }
 };
 
 export default dashboardStyle;
