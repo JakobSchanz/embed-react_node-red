@@ -12,7 +12,7 @@ import {
   DialogActions
 } from "@material-ui/core";
 import Autocomplete from "@material-ui/lab/Autocomplete";
-import { Settings as SettingsIcon, Close as CloseIcon } from "@material-ui/icons";
+import { Close as CloseIcon } from "@material-ui/icons";
 
 // Core Components
 import GridItem from "components/Grid/GridItem.js";
@@ -25,11 +25,11 @@ import CardBody from "components/Card/CardBody.js";
 import styles from "assets/jss/material-dashboard-react/views/nodeRedStyle.js";
 
 import { handleSettingsClose,  handleRename, handleDelete } from '../../backend/node-red/handleFunctionsFlowSettings'
+import { handleAddCustomNode, handleAddCategory, handleRebootNodeRed, handleAddFlow, addFlowFields, getTabelList, getExistingFlowData, addNewFlow } from '../../backend/node-red/settingsFunctions';
 
 const useStyles = makeStyles(styles);
 
 export default function NodeRed() {
-    const existingFields = useRef([]);
     const flowNameRef = useRef();
     const renameRef = useRef();
     const nodeNameRef = useRef();
@@ -37,6 +37,7 @@ export default function NodeRed() {
 
     const classes = useStyles();
 
+    const existingFields = useRef([]);
     const [flows, setFlows] = useState([]);
     const [anchorEl, setAnchorEl] = useState(null);
     const [currentFlow, setCurrentFlow] = useState(null);
@@ -58,184 +59,9 @@ export default function NodeRed() {
     }, []);
 
     useEffect(() => {
-        addFlowFields();
+        const forceRefresh = false;
+        addFlowFields({forceRefresh, existingFields, setFlows, setAnchorEl, setCurrentFlow});
     }, []);
-
-    const handleSettingsClick = (event, flow) => {
-        setAnchorEl(event.currentTarget);
-        setCurrentFlow(flow);
-    };
-
-    async function handleRebootNodeRed () {
-        const res = await fetch("http://localhost:8000/restart-node-red", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-        });
-    }
-
-    async function handleAddCustomNode () {
-        const category = value;
-        const description = nodeDesRef.current.value;
-        const name = nodeNameRef.current.value; 
-        // Fehlerbehandlung noch nicht richitg muss vor der inizialisirung sien und kp ob null oder ""
-        if (name === null || description === "" || category === "") {
-            alert("Transition message all fields must be filled in");
-            return;
-        }
-
-        const payload = {
-            table: category,
-            name: name,
-            description: description
-        };
-
-        const res = await fetch("http://localhost:8000/db-api/crate-custom-node", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(payload)
-        });
-        const data = await res.json();
-
-        console.log(data);
-    }
-
-    async function handleAddCategory () {
-        const payload = {
-            table: newOption
-        };
-
-        const res = await fetch("http://localhost:8000/db-api/crate-new-table", {
-            method: "POST",
-            headers: {
-            "Content-Type": "application/json"
-            },
-            body: JSON.stringify(payload)
-        });
-        const data = await res.json();
-                
-        console.log(data);
-    }
-
-    async function handleAddFlow() {
-        const data = await getExistingFlowData();
-        const flowName = flowNameRef.current.value;
-        const id = await generateId();
-
-        if (flowName === "") {
-            alert("Name incorect");
-            return;
-        }
-
-        createNewFlow(data, id, flowName);
-        addFlowFields();
-    }
-
-    async function getTabelList() {
-        const res = await fetch("http://localhost:8000/db-api/table-list", {
-            method: "POST",
-            headers: {
-            "Content-Type": "application/json"
-            },
-        });
-        const data = await res.json();
-        return data;
-    }
-
-    async function addFlowFields(forceRefresh = false) {
-        const data = await getExistingFlowData();
-        const tabs = data.filter((flow) => flow.type === "tab");
-
-        if (forceRefresh) {
-            existingFields.current = [];
-            setFlows([]);
-        }
-
-        for (const flow of tabs) {
-            if (!existingFields.current.includes(flow.id)) {
-                const newFlow = (
-                    <GridItem
-                        xs="auto"
-                        sm="auto"
-                        md="auto"
-                        lg="auto"
-                        key={flow.id}
-                        style={{ height: "105px" }}
-                    >
-                        <Card>
-                            <CardBody>
-                                <div>
-                                    <Button
-                                        variant="contained"
-                                        color="primary"
-                                        style={{ marginRight: "5px" }}
-                                        onClick={() => handleOpenFlow(flow.id)}
-                                    >
-                                        {flow.label}
-                                    </Button>
-
-                                    <Button
-                                        variant="contained"
-                                        color="secondary"
-                                        onClick={(e) => handleSettingsClick(e, flow)} 
-                                    >
-                                        <SettingsIcon />
-                                    </Button>
-                                </div>
-                            </CardBody>
-                        </Card>
-                    </GridItem>
-                );
-
-                existingFields.current.push(flow.id);
-                setFlows((prev) => [...prev, newFlow]);
-            }
-        }
-    }
-
-    function generateId() {
-        return Math.random().toString(16).substr(2, 8);
-    }
-
-    async function getExistingFlowData() {
-        const res = await fetch("http://localhost:8000/flows");
-        const data = await res.json();
-        return data;
-    }
-
-    async function createNewFlow(data, id, flowName) {
-        const newFlow = {
-            id: id,
-            type: "tab",
-            label: flowName,
-            disabled: false,
-            info: "",
-            env: [],
-        };
-        data.push(newFlow);
-        addNewFlow(data);
-    }
-
-    async function addNewFlow(data) {
-        const update = await fetch("http://localhost:8000/flows", {
-            method: "POST",
-            headers: {
-            "Content-Type": "application/json",
-        },
-            body: JSON.stringify(data),
-        });
-
-        if (!update.ok) {
-            console.error("Error when creating:", update.status);
-        }
-    }
-
-    async function handleOpenFlow(flowID) {
-        window.open(`http://localhost:8000/#flow/${flowID}`, "_blank");
-    }
 
     return (
         <div>
@@ -281,7 +107,15 @@ export default function NodeRed() {
                                                     id="add-new-flow"
                                                     variant="contained"
                                                     color="primary"
-                                                    onClick={handleAddFlow}
+                                                    onClick={() =>
+                                                        handleAddFlow({
+                                                            existingFields,
+                                                            flowNameRef,
+                                                            setFlows,
+                                                            setAnchorEl,
+                                                            setCurrentFlow
+                                                        })
+                                                    }
                                                     size="medium"
                                                 >
                                                     Add Flow
@@ -327,7 +161,7 @@ export default function NodeRed() {
                                                         </Button>
 
                                                         <Button
-                                                            onClick = {handleAddCategory}
+                                                            onClick={() => handleAddCategory(newOption, setOpenDialog)}
                                                             color="primary"
                                                         >
                                                             Add
@@ -372,7 +206,13 @@ export default function NodeRed() {
                                                     id="add-new-node"
                                                     variant="contained"
                                                     color="primary"
-                                                    onClick={handleAddCustomNode}
+                                                    onClick={() =>
+                                                        handleAddCustomNode({
+                                                            value,
+                                                            nodeNameRef,
+                                                            nodeDesRef,
+                                                        })
+                                                    }
                                                     size="medium"
                                                     style={{marginLeft: "10px",}}
                                                 >
@@ -407,7 +247,6 @@ export default function NodeRed() {
                 id={popoverId}
                 open={open}
                 anchorEl={anchorEl}
-                onClick={() => handleSettingsClose(setAnchorEl, setCurrentFlow)}
                 anchorOrigin={{
                     vertical: "bottom",
                     horizontal: "left",
@@ -446,13 +285,15 @@ export default function NodeRed() {
                             color="primary"
                             onClick={() =>
                                 handleRename({
-                                renameRef,
-                                currentFlow,
-                                setAnchorEl,
-                                setCurrentFlow,
-                                getExistingFlowData,
-                                addNewFlow,
-                                addFlowFields
+                                    renameRef,
+                                    currentFlow,
+                                    setAnchorEl,
+                                    setCurrentFlow,
+                                    getExistingFlowData,
+                                    addNewFlow,
+                                    addFlowFields,
+                                    existingFields, 
+                                    setFlows
                                 })
                             } 
                         >
@@ -466,12 +307,14 @@ export default function NodeRed() {
                         color="primary"
                         onClick={() =>
                             handleDelete({
-                            currentFlow,
-                            setAnchorEl,
-                            setCurrentFlow,
-                            getExistingFlowData,
-                            addNewFlow,
-                            addFlowFields
+                                currentFlow,
+                                setAnchorEl,
+                                setCurrentFlow,
+                                getExistingFlowData,
+                                addNewFlow,
+                                addFlowFields,
+                                existingFields,
+                                setFlows
                             })
                         }
                     >

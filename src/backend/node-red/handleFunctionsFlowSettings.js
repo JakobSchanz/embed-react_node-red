@@ -10,7 +10,9 @@ export async function handleRename({
     setCurrentFlow,
     getExistingFlowData,
     addNewFlow,
-    addFlowFields
+    addFlowFields,
+    existingFields, 
+    setFlows
 }) {
     const newName = renameRef.current.value;
 
@@ -26,7 +28,8 @@ export async function handleRename({
     handleSettingsClose(setAnchorEl, setCurrentFlow);
 
     await addNewFlow(updatedData);
-    await addFlowFields(true);
+    const forceRefresh = true;
+    await addFlowFields({forceRefresh, existingFields, setFlows, setAnchorEl, setCurrentFlow});
 }
 
 export async function handleDelete({
@@ -35,7 +38,9 @@ export async function handleDelete({
     setCurrentFlow,
     getExistingFlowData,
     addNewFlow,
-    addFlowFields
+    addFlowFields,
+    existingFields,
+    setFlows
 }) {
     if (!currentFlow || !currentFlow.id) return;
 
@@ -45,5 +50,6 @@ export async function handleDelete({
 
     handleSettingsClose(setAnchorEl, setCurrentFlow);
     await addNewFlow(updatedData);
-    await addFlowFields(true);
+    const forceRefresh = true;
+    await addFlowFields({forceRefresh, existingFields, setFlows, setAnchorEl, setCurrentFlow});
 }
