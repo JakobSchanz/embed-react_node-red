@@ -1,53 +1,63 @@
 import React, { useState, useRef, useEffect } from "react";
-// @material-ui/core components
-import { makeStyles } from "@material-ui/core/styles";
-import { TextField, Button, Popover } from "@material-ui/core"; 
+
+// Material UI
+import {
+  makeStyles,
+  TextField,
+  Button,
+  Popover,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions
+} from "@material-ui/core";
 import Autocomplete from "@material-ui/lab/Autocomplete";
+import { Settings as SettingsIcon, Close as CloseIcon } from "@material-ui/icons";
 
-import SettingsIcon from "@material-ui/icons/Settings";
-import CloseIcon from "@material-ui/icons/Close";
-
-// core components
+// Core Components
 import GridItem from "components/Grid/GridItem.js";
 import GridContainer from "components/Grid/GridContainer.js";
 import Card from "components/Card/Card.js";
 import CardHeader from "components/Card/CardHeader.js";
 import CardBody from "components/Card/CardBody.js";
 
+// Styles
 import styles from "assets/jss/material-dashboard-react/views/nodeRedStyle.js";
-
-
-import {
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions
-} from "@material-ui/core";
 
 const useStyles = makeStyles(styles);
 
 export default function NodeRed() {
     const existingFields = useRef([]);
-
-    useEffect(() => {
-        addFlowFields();
-    }, []);
-
     const flowNameRef = useRef();
-    const classes = useStyles();
     const renameRef = useRef();
+    const nodeNameRef = useRef();
+    const nodeDesRef = useRef();
 
+    const classes = useStyles();
 
     const [flows, setFlows] = useState([]);
-
     const [anchorEl, setAnchorEl] = useState(null);
     const [currentFlow, setCurrentFlow] = useState(null);
-    
-    const [options, setOptions] = useState(["Option A", "Option B"]);
+    const [options, setOptions] = useState([]);
     const [value, setValue] = useState(null);
     const [openDialog, setOpenDialog] = useState(false);
     const [newOption, setNewOption] = useState("");
     const customOptions = [...options, "__add_new__"];
+
+    const open = Boolean(anchorEl);
+    const popoverId = open ? "settings-popover" : undefined;
+
+    useEffect(() => {
+        async function fetchData() {
+            const list = await getTabelList();
+            setOptions(list);
+        }
+        fetchData();
+    }, []);
+
+    useEffect(() => {
+        addFlowFields();
+    }, []);
 
     const handleSettingsClick = (event, flow) => {
         setAnchorEl(event.currentTarget);
@@ -87,12 +97,61 @@ export default function NodeRed() {
         handleSettingsClose();
         await addNewFlow(updatedData);
         await addFlowFields(true);
-
-
     }
 
-    const open = Boolean(anchorEl);
-    const popoverId = open ? "settings-popover" : undefined;
+    async function handleRebootNodeRed () {
+        const res = await fetch("http://localhost:8000/restart-node-red", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+        });
+    }
+
+    async function handleAddCustomNode () {
+        const category = value;
+        const description = nodeDesRef.current.value;
+        const name = nodeNameRef.current.value; 
+        // Fehlerbehandlung noch nicht richitg muss vor der inizialisirung sien und kp ob null oder ""
+        if (name === null || description === "" || category === "") {
+            alert("Transition message all fields must be filled in");
+            return;
+        }
+
+        const payload = {
+            table: category,
+            name: name,
+            description: description
+        };
+
+        const res = await fetch("http://localhost:8000/db-api/crate-custom-node", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(payload)
+        });
+        const data = await res.json();
+
+        console.log(data);
+    }
+
+    async function handleAddCategory () {
+        const payload = {
+            table: newOption
+        };
+
+        const res = await fetch("http://localhost:8000/db-api/crate-new-table", {
+            method: "POST",
+            headers: {
+            "Content-Type": "application/json"
+            },
+            body: JSON.stringify(payload)
+        });
+        const data = await res.json();
+                
+        console.log(data);
+    }
 
     async function handleAddFlow() {
         const data = await getExistingFlowData();
@@ -106,6 +165,17 @@ export default function NodeRed() {
 
         createNewFlow(data, id, flowName);
         addFlowFields();
+    }
+
+    async function getTabelList() {
+        const res = await fetch("http://localhost:8000/db-api/table-list", {
+            method: "POST",
+            headers: {
+            "Content-Type": "application/json"
+            },
+        });
+        const data = await res.json();
+        return data;
     }
 
     async function addFlowFields(forceRefresh = false) {
@@ -308,14 +378,15 @@ export default function NodeRed() {
                                                         </Button>
 
                                                         <Button
-                                                            onClick={() => {
+                                                            /*onClick={() => {
                                                                 if (newOption && !options.includes(newOption)) {
                                                                     setOptions([...options, newOption]);
                                                                     setValue(newOption);
                                                                 }
                                                                 setNewOption("");
                                                                 setOpenDialog(false);
-                                                            }}
+                                                            }}*/
+                                                            onClick = {handleAddCategory}
                                                             color="primary"
                                                         >
                                                             Add
@@ -324,7 +395,7 @@ export default function NodeRed() {
                                                 </Dialog>
                                                 
                                                 <TextField
-                                                    //inputRef={flowNameRef}
+                                                    inputRef={nodeNameRef}
                                                     label="Node Name"
                                                     variant="outlined"
                                                     size="small"
@@ -341,7 +412,7 @@ export default function NodeRed() {
                                                 />
 
                                                 <TextField
-                                                    //inputRef={flowNameRef}
+                                                    inputRef={nodeDesRef}
                                                     label="Node Description"
                                                     variant="outlined"
                                                     size="small"
@@ -360,7 +431,7 @@ export default function NodeRed() {
                                                     id="add-new-node"
                                                     variant="contained"
                                                     color="primary"
-                                                    //onClick={handleAddFlow}
+                                                    onClick={handleAddCustomNode}
                                                     size="medium"
                                                     style={{marginLeft: "10px",}}
                                                 >
@@ -371,7 +442,7 @@ export default function NodeRed() {
                                                     id="reboot-node-red"
                                                     variant="contained"
                                                     color="primary"
-                                                    //onClick={handleAddFlow}
+                                                    onClick={handleRebootNodeRed}
                                                     size="medium"
                                                     style={{marginLeft: "10px",}}
                                                 >
