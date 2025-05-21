@@ -6,9 +6,30 @@ import CardBody from "components/Card/CardBody.js";
 import { Settings as SettingsIcon } from "@material-ui/icons";
 import { Button } from "@material-ui/core";
 
+const config = {
+    domain: "http://localhost:8000/",
+    postMethod: "POST",
+    flowType: "tab",
+    endPoints: {
+        restart: "restart-node-red",
+        createCustomNodes: "db-api/crate-custom-node",
+        createNewTable: "db-api/crate-new-table",
+        getAllFlows: "flows",
+        getAllTables: "db-api/table-list",
+    },
+    flowFieldDesign: {
+        sizeAuto: "auto",
+        variantContained: "contained",
+        colors: {
+            prim: "primary",
+            sec: "secondary",
+        },
+    }
+}
+
 export async function handleRebootNodeRed () { 
-    const res = await fetch("http://localhost:8000/restart-node-red", {
-        method: "POST",
+    const res = await fetch(config.domain + config.endPoints.restart, {
+        method: config.postMethod,
         headers: {
             "Content-Type": "application/json"
         },
@@ -31,8 +52,8 @@ export async function handleAddCustomNode ({ value, nodeNameRef, nodeDesRef }) {
         description: description
     };
 
-    const res = await fetch("http://localhost:8000/db-api/crate-custom-node", {
-        method: "POST",
+    const res = await fetch(config.domain + config.endPoints.createCustomNodes, {
+        method: config.postMethod,
         headers: {
             "Content-Type": "application/json"
         },
@@ -48,16 +69,51 @@ export async function handleAddCategory (newOption, setOpenDialog) {
         table: newOption
     };
 
-    const res = await fetch("http://localhost:8000/db-api/crate-new-table", {
-        method: "POST",
+    const res = await fetch(config.domain + config.endPoints.createNewTable, {
+        method: config.postMethod,
         headers: {
-        "Content-Type": "application/json"
+            "Content-Type": "application/json"
         },
         body: JSON.stringify(payload)
     });
     const data = await res.json();
     setOpenDialog(false);        
     console.log(data);
+}
+
+export async function addNewFlow(data) {
+    const update = await fetch(config.domain + config.endPoints.getAllFlows, {
+        method: config.postMethod,
+        headers: {
+        "Content-Type": "application/json",
+    },
+        body: JSON.stringify(data),
+    });
+
+    if (!update.ok) {
+        console.error("Error when creating:", update.status);
+    }
+}
+
+export async function getTabelList() {
+    const res = await fetch(config.domain + config.endPoints.getAllTables, {
+        method: config.postMethod,
+        headers: {
+        "Content-Type": "application/json"
+        },
+    });
+    const data = await res.json();
+    return data;
+}
+
+export async function getExistingFlowData() { 
+    const res = await fetch(config.domain + config.endPoints.getAllFlows);
+    const data = await res.json();
+    return data;
+}
+
+export async function handleOpenFlow(flowID) {
+    window.open(`${config.domain}#flow/${flowID}`, "_blank");
 }
 
 export async function handleAddFlow({existingFields, flowNameRef, setFlows, setAnchorEl, setCurrentFlow}) {
@@ -76,7 +132,7 @@ export async function handleAddFlow({existingFields, flowNameRef, setFlows, setA
 
 export async function addFlowFields({forceRefresh = false, existingFields, setFlows, setAnchorEl, setCurrentFlow}) {
     const data = await getExistingFlowData();
-    const tabs = data.filter((flow) => flow.type === "tab");
+    const tabs = data.filter((flow) => flow.type === config.flowType);
     if (forceRefresh) {
         existingFields.current = [];
         setFlows([]);
@@ -85,10 +141,10 @@ export async function addFlowFields({forceRefresh = false, existingFields, setFl
         if (!existingFields.current.includes(flow.id)) {
             const newFlow = (
                 <GridItem
-                    xs="auto"
-                    sm="auto"
-                    md="auto"
-                    lg="auto"
+                    xs={config.flowFieldDesign.sizeAuto}
+                    sm={config.flowFieldDesign.sizeAuto}
+                    md={config.flowFieldDesign.sizeAuto}
+                    lg={config.flowFieldDesign.sizeAuto}
                     key={flow.id}
                     style={{ height: "105px" }}
                 >
@@ -96,8 +152,8 @@ export async function addFlowFields({forceRefresh = false, existingFields, setFl
                         <CardBody>
                             <div>
                                 <Button
-                                    variant="contained"
-                                    color="primary"
+                                    variant={config.flowFieldDesign.variantContained}
+                                    color={config.flowFieldDesign.colors.prim}
                                     style={{ marginRight: "5px" }}
                                     onClick={() => handleOpenFlow(flow.id)}
                                 >
@@ -105,8 +161,8 @@ export async function addFlowFields({forceRefresh = false, existingFields, setFl
                                 </Button>
 
                                 <Button
-                                    variant="contained"
-                                    color="secondary"
+                                    variant={config.flowFieldDesign.variantContained}
+                                    color={config.flowFieldDesign.colors.sec}
                                     onClick={(e) => handleSettingsClick({event: e, flow, setAnchorEl, setCurrentFlow})} 
                                 >
                                     <SettingsIcon />
@@ -127,31 +183,14 @@ const handleSettingsClick = ({event, flow, setAnchorEl, setCurrentFlow}) => {
     setCurrentFlow(flow);
 };
 
-export async function getTabelList() {
-    const res = await fetch("http://localhost:8000/db-api/table-list", {
-        method: "POST",
-        headers: {
-        "Content-Type": "application/json"
-        },
-    });
-    const data = await res.json();
-    return data;
-}
-
 function generateId() {
     return Math.random().toString(16).substr(2, 8);
-}
-
-export async function getExistingFlowData() { 
-    const res = await fetch("http://localhost:8000/flows");
-    const data = await res.json();
-    return data;
 }
 
 async function createNewFlow(data, id, flowName) {
     const newFlow = {
         id: id,
-        type: "tab",
+        type: config.flowType,
         label: flowName,
         disabled: false,
         info: "",
@@ -159,22 +198,4 @@ async function createNewFlow(data, id, flowName) {
     };
     data.push(newFlow);
     await addNewFlow(data);
-}
-
-export async function addNewFlow(data) {
-    const update = await fetch("http://localhost:8000/flows", {
-        method: "POST",
-        headers: {
-        "Content-Type": "application/json",
-    },
-        body: JSON.stringify(data),
-    });
-
-    if (!update.ok) {
-        console.error("Error when creating:", update.status);
-    }
-}
-
-export async function handleOpenFlow(flowID) {
-    window.open(`http://localhost:8000/#flow/${flowID}`, "_blank");
 }

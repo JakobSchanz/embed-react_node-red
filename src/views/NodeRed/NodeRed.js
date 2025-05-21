@@ -29,6 +29,57 @@ import { handleAddCustomNode, handleAddCategory, handleRebootNodeRed, handleAddF
 
 const useStyles = makeStyles(styles);
 
+const config = {
+    text: {
+        titleArea: {
+            title: "Node-Red",
+            titleDescription: "Flows for the visualisation of diagrams",
+        },
+        settingsArea: {
+            title: "Settings",
+            flowNameLable: "Flow Name",
+            addFlowButton: "Add Flow",
+            addCategoryOption: "Add",
+            categoryLable: "Category",
+            dialogField: {
+                title: "Add new Category",
+                textFieldLable: "new Category",
+                cancelButton: "Cancel",
+                addButton: "Add",
+            },
+            nameLable: "Node Name",
+            desLable: "Node Description",
+            addNodeButton: "Add Node",
+            rebootNodeRedButton: "Reboot node-red",
+        },
+        flowSettings: {
+            title: "Settings for:",
+            renameLable: "Edit Name",
+            saveButton: "Save",
+            deleteButton: "Delete",
+        },
+    },
+    design: {
+        colors: {
+            prim: "primary",
+        },
+        variants: {
+            out: "outlined",
+            cont: "contained",
+        },
+        sizes: {
+            med: "medium",
+            sma: "small",
+        },
+        settingsArea:{
+            setMargin: "10px",
+            setWidth: "150px",
+            setHeight: "40px",
+        },
+        displayFlex: "flex",
+    }
+}
+
 export default function NodeRed() {
     const flowNameRef = useRef();
     const renameRef = useRef();
@@ -68,10 +119,10 @@ export default function NodeRed() {
             <GridContainer>
                 <GridItem xs={12} sm={12} md={12}>
                     <Card plain>
-                        <CardHeader plain color="primary">
-                            <h4 className={classes.cardTitleWhite}>Node-Red</h4>
+                        <CardHeader plain color={config.design.colors.prim}>
+                            <h4 className={classes.cardTitleWhite}>{config.text.titleArea.title}</h4>
                             <p className={classes.cardCategoryWhite}>
-                                Flows for the visualisation of diagrams
+                                {config.text.titleArea.titleDescription}
                             </p>
                         </CardHeader>
 
@@ -80,33 +131,31 @@ export default function NodeRed() {
                                 <Card>
                                     <CardHeader
                                         plain
-                                        color="primary"
+                                        color={config.design.colors.prim}
                                         className={classes.smallCardHeader}
                                     >
-                                        <h4 className={classes.cardTitleBlack}>Settings</h4>
+                                        <h4 className={classes.cardTitleBlack}>{config.text.settingsArea.title}</h4>
                                     </CardHeader>
 
                                     <CardBody>
                                         <div
-                                            id="node-red-settings"
                                             className={classes.basicStyleOne}
                                         >
                                             <div className={classes.basicStyleOne}>
                                                 <TextField
                                                     inputRef={flowNameRef}
-                                                    label="Flow Name"
-                                                    variant="outlined"
-                                                    size="small"
+                                                    label={config.text.settingsArea.flowNameLable}
+                                                    variant={config.design.variants.out}
+                                                    size={config.design.sizes.sma}
                                                     InputProps={{
-                                                        style: {height: "40px", flex: 1},
+                                                        style: {height: config.design.settingsArea.setHeight, flex: 1},
                                                     }}
-                                                    style={{ marginRight: "10px"}}
+                                                    style={{ marginRight: config.design.settingsArea.setMargin}}
                                                 />
 
                                                 <Button
-                                                    id="add-new-flow"
-                                                    variant="contained"
-                                                    color="primary"
+                                                    variant={config.design.variants.cont}
+                                                    color={config.design.colors.prim}
                                                     onClick={() =>
                                                         handleAddFlow({
                                                             existingFields,
@@ -116,16 +165,16 @@ export default function NodeRed() {
                                                             setCurrentFlow
                                                         })
                                                     }
-                                                    size="medium"
+                                                    size={config.design.sizes.med}
                                                 >
-                                                    Add Flow
+                                                    {config.text.settingsArea.addFlowButton}
                                                 </Button>
                                             </div>
                                             
                                             <div className={classes.settingsDiv}>
                                                 <Autocomplete
-                                                    style={{width: "150px"}}
-                                                    size="small"
+                                                    style={{width: config.design.settingsArea.setWidth}}
+                                                    size={config.design.sizes.sma}
                                                     value={value}
                                                     onChange={(event, newValue) => {
                                                         if (newValue === "__add_new__") {
@@ -139,16 +188,16 @@ export default function NodeRed() {
                                                         option === "__add_new__" ? "Add" : option
                                                     }
                                                     renderInput={(params) => (
-                                                        <TextField {...params} label="Category" variant="outlined" />
+                                                        <TextField {...params} label={config.text.settingsArea.categoryLable} variant={config.design.variants.out} />
                                                     )}
                                                 />      
                                                 <Dialog open={openDialog} onClose={() => setOpenDialog(false)}>
-                                                    <DialogTitle>Add new Category</DialogTitle>
+                                                    <DialogTitle>{config.text.settingsArea.dialogField.title}</DialogTitle>
                                                     <DialogContent>
                                                         <TextField
                                                             autoFocus
                                                             margin="dense"
-                                                            label="new Category"
+                                                            label={config.text.settingsArea.dialogField.textFieldLable}
                                                             fullWidth
                                                             value={newOption}
                                                             onChange={(e) => setNewOption(e.target.value)}
@@ -156,56 +205,55 @@ export default function NodeRed() {
                                                     </DialogContent>
 
                                                     <DialogActions>
-                                                        <Button onClick={() => setOpenDialog(false)} color="primary">
-                                                            Cancel
+                                                        <Button onClick={() => setOpenDialog(false)} color={config.design.colors.prim}>
+                                                            {config.text.settingsArea.dialogField.cancelButton}
                                                         </Button>
 
                                                         <Button
                                                             onClick={() => handleAddCategory(newOption, setOpenDialog)}
-                                                            color="primary"
+                                                            color={config.design.colors.prim}
                                                         >
-                                                            Add
+                                                            {config.text.settingsArea.dialogField.addButton}
                                                         </Button>
                                                     </DialogActions>
                                                 </Dialog>
                                                 
                                                 <TextField
                                                     inputRef={nodeNameRef}
-                                                    label="Node Name"
-                                                    variant="outlined"
-                                                    size="small"
+                                                    label={config.text.settingsArea.nameLable}
+                                                    variant={config.design.variants.out}
+                                                    size={config.design.sizes.sma}
                                                     InputProps={{
                                                         style: {
-                                                            height: "40px",
+                                                            height: config.design.settingsArea.setHeight,
                                                             flex: 1,
                                                         },
                                                     }}
                                                     style={{
-                                                        width: "150px",
-                                                        marginLeft: "10px",
+                                                        width: config.design.settingsArea.setWidth,
+                                                        marginLeft: config.design.settingsArea.setMargin,
                                                     }}
                                                 />
 
                                                 <TextField
                                                     inputRef={nodeDesRef}
-                                                    label="Node Description"
-                                                    variant="outlined"
-                                                    size="small"
+                                                    label={config.text.settingsArea.desLable}
+                                                    variant={config.design.variants.out}
+                                                    size={config.design.sizes.sma}
                                                     InputProps={{
                                                         style: {
-                                                            height: "40px",
+                                                            height: config.design.settingsArea.setHeight,
                                                             flex: 1,
                                                         },
                                                     }}
                                                     style={{
-                                                        width: "150px",
-                                                        marginLeft: "10px",
+                                                        width: config.design.settingsArea.setWidth,
+                                                        marginLeft: config.design.settingsArea.setMargin,
                                                     }}
                                                 />
                                                 <Button
-                                                    id="add-new-node"
-                                                    variant="contained"
-                                                    color="primary"
+                                                    variant={config.design.variants.cont}
+                                                    color={config.design.colors.prim}
                                                     onClick={() =>
                                                         handleAddCustomNode({
                                                             value,
@@ -213,21 +261,20 @@ export default function NodeRed() {
                                                             nodeDesRef,
                                                         })
                                                     }
-                                                    size="medium"
-                                                    style={{marginLeft: "10px",}}
+                                                    size={config.design.sizes.med}
+                                                    style={{marginLeft: config.design.settingsArea.setMargin,}}
                                                 >
-                                                    Add Node
+                                                    {config.text.settingsArea.addNodeButton}
                                                 </Button>
 
                                                 <Button
-                                                    id="reboot-node-red"
-                                                    variant="contained"
-                                                    color="primary"
+                                                    variant={config.design.variants.cont}
+                                                    color={config.design.colors.prim}
                                                     onClick={handleRebootNodeRed}
-                                                    size="medium"
-                                                    style={{marginLeft: "10px",}}
+                                                    size={config.design.sizes.med}
+                                                    style={{marginLeft: config.design.settingsArea.setMargin,}}
                                                 >
-                                                    Reboot node-red
+                                                    {config.text.settingsArea.rebootNodeRedButton}
                                                 </Button>
                                             </div>
                                         </div>
@@ -257,32 +304,32 @@ export default function NodeRed() {
                 }}
             >
                 <div style={{ padding: "16px", minWidth: "200px" }}>
-                    <div style={{ display: "flex", justifyContent: "space-between" }}>
+                    <div style={{ display: config.design.displayFlex, justifyContent: "space-between" }}>
                         <p>
-                            <strong>Settings for:</strong> {currentFlow && currentFlow.label}
+                            <strong>{config.text.flowSettings.title}</strong> {currentFlow && currentFlow.label}
                         </p>
 
                         <Button
                             className={classes.settingsButton}
-                            variant="contained"
-                            color="primary"
+                            variant={config.design.variants.cont}
+                            color={config.design.colors.prim}
                             onClick={() => handleSettingsClose(setAnchorEl, setCurrentFlow)}
                         >
                             <CloseIcon />
                         </Button>
                     </div>
                     
-                    <div style={{display: "flex"}}>
+                    <div style={{display: config.design.displayFlex}}>
                         <TextField
-                            label="Edit Name"
+                            label={config.text.flowSettings.renameLable}
                             fullWidth
                             defaultValue={currentFlow && currentFlow.label}
                             inputRef={renameRef}
                         />
                         <Button
                             style={{ marginTop: "12px", marginLeft: "7px" }}
-                            variant="contained"
-                            color="primary"
+                            variant={config.design.variants.cont}
+                            color={config.design.colors.prim}
                             onClick={() =>
                                 handleRename({
                                     renameRef,
@@ -297,14 +344,14 @@ export default function NodeRed() {
                                 })
                             } 
                         >
-                            Save
+                            {config.text.flowSettings.saveButton}
                         </Button>
                     </div>
                     
                     <Button
                         style={{ marginTop: "12px", width: "100%" }}
-                        variant="contained"
-                        color="primary"
+                        variant={config.design.variants.cont}
+                        color={config.design.colors.prim}
                         onClick={() =>
                             handleDelete({
                                 currentFlow,
@@ -318,7 +365,7 @@ export default function NodeRed() {
                             })
                         }
                     >
-                        Delete
+                        {config.text.flowSettings.deleteButton}
                     </Button>
                 </div>
             </Popover>
