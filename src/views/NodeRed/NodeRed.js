@@ -161,6 +161,17 @@ export default function NodeRed() {
                                                         style: {height: config.design.settingsArea.setHeight, flex: 1},
                                                     }}
                                                     style={{ marginRight: config.design.settingsArea.setMargin}}
+                                                    onKeyDown={(e) => {
+                                                        if (e.key === 'Enter') {
+                                                            handleAddFlow({
+                                                                existingFields,
+                                                                flowNameRef,
+                                                                setFlows,
+                                                                setAnchorEl,
+                                                                setCurrentFlow
+                                                            });
+                                                        }
+                                                    }}
                                                 />
 
                                                 <Button
@@ -314,7 +325,7 @@ export default function NodeRed() {
                                                         })
                                                     }
                                                     size={config.design.sizes.med}
-                                                    style={{marginLeft: config.design.settingsArea.setMargin,}}
+                                                    style={{marginLeft: config.design.settingsArea.setMargin}}
                                                 >
                                                     {config.text.settingsArea.addNodeButton}
                                                 </Button>
@@ -377,6 +388,21 @@ export default function NodeRed() {
                             fullWidth
                             defaultValue={currentFlow && currentFlow.label}
                             inputRef={renameRef}
+                            onKeyDown={(e) => {
+                                if (e.key === 'Enter') {
+                                    handleRename({
+                                        renameRef,
+                                        currentFlow,
+                                        setAnchorEl,
+                                        setCurrentFlow,
+                                        getExistingFlowData,
+                                        addNewFlow,
+                                        addFlowFields,
+                                        existingFields, 
+                                        setFlows
+                                    })
+                                }
+                            }}
                         />
                         <Button
                             style={{ marginTop: "12px", marginLeft: "7px" }}

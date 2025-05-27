@@ -45,7 +45,8 @@ export async function handleRebootNodeRed () {
 
 export async function handleAddCustomNode ({ value, nodeNameRef, nodeDesRef }) { 
     try {
-        if (nodeNameRef.current.value === null || nodeDesRef.current.value === "" || value === "") {
+        if (nodeNameRef.current.value === "" || nodeDesRef.current.value === "" || value === null) {
+            alert("all fields must be completed");
             throw new Error("One node Data is empty");
         }
 
