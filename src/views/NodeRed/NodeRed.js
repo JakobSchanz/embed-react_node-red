@@ -9,10 +9,12 @@ import {
   Dialog,
   DialogTitle,
   DialogContent,
-  DialogActions
+  DialogActions,
+  InputAdornment,
+  Tooltip
 } from "@material-ui/core";
 import Autocomplete from "@material-ui/lab/Autocomplete";
-import { Close as CloseIcon } from "@material-ui/icons";
+import { Close as CloseIcon, Info as InfoIcon } from "@material-ui/icons";
 
 // Core Components
 import GridItem from "components/Grid/GridItem.js";
@@ -29,7 +31,7 @@ import { handleAddCustomNode, handleAddCategory, handleRebootNodeRed, handleAddF
 
 const useStyles = makeStyles(styles);
 
-const config = {
+const config = { 
     text: {
         titleArea: {
             title: "Node-Red",
@@ -43,7 +45,11 @@ const config = {
             categoryLable: "Category",
             dialogField: {
                 title: "Add new Category",
-                textFieldLable: "new Category",
+                textFieldLableNew: "new Category",
+                textFieldLabelColor: "Color (Optional)",
+                textFieldLabelIcon: "Icon (Optional)",
+                infoMessageColor: "Farbe im Hexcolor eingeben beispiel: #ffff",
+                infoMessageIcon: "From library fontawesome VERSION 4, example: fa-wrench: https://fontawesome.com/v4/icons/",
                 cancelButton: "Cancel",
                 addButton: "Add",
             },
@@ -95,19 +101,23 @@ export default function NodeRed() {
     const [options, setOptions] = useState([]);
     const [value, setValue] = useState(null);
     const [openDialog, setOpenDialog] = useState(false);
-    const [newOption, setNewOption] = useState("");
+    const [newOptionName, setNewOptionName] = useState("");
+    const [newOptionIcon, setNewOptionIcon] = useState("");
+    const [newOptionColor, setNewOptionColor] = useState("");
+
     const customOptions = [...options, "__add_new__"];
 
     const open = Boolean(anchorEl);
     const popoverId = open ? "settings-popover" : undefined;
 
     useEffect(() => {
-        async function fetchData() {
-            const list = await getTabelList();
-            setOptions(list);
-        }
         fetchData();
     }, []);
+
+    async function fetchData() {
+        const list = await getTabelList();
+        setOptions(list);
+    }
 
     useEffect(() => {
         const forceRefresh = false;
@@ -197,10 +207,52 @@ export default function NodeRed() {
                                                         <TextField
                                                             autoFocus
                                                             margin="dense"
-                                                            label={config.text.settingsArea.dialogField.textFieldLable}
+                                                            label={config.text.settingsArea.dialogField.textFieldLableNew}
                                                             fullWidth
-                                                            value={newOption}
-                                                            onChange={(e) => setNewOption(e.target.value)}
+                                                            value={newOptionName}
+                                                            onChange={(e) => setNewOptionName(e.target.value)}
+                                                        />
+                                                    </DialogContent>
+
+                                                    <DialogContent>
+                                                        <TextField
+                                                            autoFocus
+                                                            margin="dense"
+                                                            label={config.text.settingsArea.dialogField.textFieldLabelColor}
+                                                            fullWidth
+                                                            value={newOptionColor}
+                                                            onChange={(e) => setNewOptionColor(e.target.value)}
+
+                                                            InputProps={{
+                                                                endAdornment: (
+                                                                    <InputAdornment position="end">
+                                                                    <Tooltip title={config.text.settingsArea.dialogField.infoMessageColor}>
+                                                                        <InfoIcon style={{ cursor: "pointer" }} />
+                                                                    </Tooltip>
+                                                                    </InputAdornment>
+                                                                )
+                                                            }}
+                                                        />
+                                                    </DialogContent>
+
+                                                    <DialogContent>
+                                                        <TextField
+                                                            autoFocus
+                                                            margin="dense"
+                                                            label={config.text.settingsArea.dialogField.textFieldLabelIcon}
+                                                            fullWidth
+                                                            value={newOptionIcon}
+                                                            onChange={(e) => setNewOptionIcon(e.target.value)}
+
+                                                            InputProps={{
+                                                                endAdornment: (
+                                                                    <InputAdornment position="end">
+                                                                    <Tooltip title={config.text.settingsArea.dialogField.infoMessageIcon}>
+                                                                        <InfoIcon style={{ cursor: "pointer" }} />
+                                                                    </Tooltip>
+                                                                    </InputAdornment>
+                                                                )
+                                                            }}
                                                         />
                                                     </DialogContent>
 
@@ -210,7 +262,7 @@ export default function NodeRed() {
                                                         </Button>
 
                                                         <Button
-                                                            onClick={() => handleAddCategory(newOption, setOpenDialog)}
+                                                            onClick={() => handleAddCategory(newOptionName, newOptionColor, newOptionIcon, setOpenDialog, fetchData, setValue)}
                                                             color={config.design.colors.prim}
                                                         >
                                                             {config.text.settingsArea.dialogField.addButton}

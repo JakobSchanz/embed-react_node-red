@@ -35,7 +35,7 @@ export async function handleRebootNodeRed () {
                 "Content-Type": "application/json"
             },
         });
-        if (!res.status === 200) {
+        if (res.status !== 200) {
             throw new Error ("Error when restarting node-red");
         }
     } catch (error) {
@@ -63,7 +63,7 @@ export async function handleAddCustomNode ({ value, nodeNameRef, nodeDesRef }) {
             body: JSON.stringify(payload)
         });
         const data = await res.json();
-        if (!data.status === 200) {
+        if (data.status !== 200) {
             throw new Error("Error when creating new Node");
         }
     } catch (error) {
@@ -71,11 +71,15 @@ export async function handleAddCustomNode ({ value, nodeNameRef, nodeDesRef }) {
     }
 }
 
-export async function handleAddCategory (newOption, setOpenDialog) { 
+export async function handleAddCategory (newOptionName, newOptionColor, newOptionIcon, setOpenDialog, fetchData, setValue) { 
     try {
         const payload = {
-            table: newOption
+            tableName: newOptionName,
+            tableColor: newOptionColor,
+            tableIcon: newOptionIcon
         };
+        
+        console.log(newOptionName);
 
         const res = await fetch(config.domain + config.endPoints.createNewTable, {
             method: config.postMethod,
@@ -87,9 +91,11 @@ export async function handleAddCategory (newOption, setOpenDialog) {
         const data = await res.json();
         setOpenDialog(false);       
 
-        if (!data.status === 200) {
+        if (data.starus !== 200) {
             throw new Error ("Error when creating new Table");
         }
+        await fetchData();
+        setValue(newOptionName);
     } catch (error) {
         console.error("Error in Function handleAddCategory: ", error.message);
     }
