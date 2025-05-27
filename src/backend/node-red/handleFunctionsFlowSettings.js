@@ -36,7 +36,7 @@ export async function handleRename({
         const forceRefresh = true;
         await addFlowFields({forceRefresh, existingFields, setFlows, setAnchorEl, setCurrentFlow});
     } catch (error) {
-        console.error("Error in Function handleRename", error.message);
+        console.error("Error in Function handleRename: ", error.message);
     }
 }
 

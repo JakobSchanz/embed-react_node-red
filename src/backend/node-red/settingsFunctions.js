@@ -92,7 +92,7 @@ export async function handleAddCategory (newOptionName, newOptionColor, newOptio
         const data = await res.json();
         setOpenDialog(false);       
 
-        if (data.starus !== 200) {
+        if (data.status !== 200) {
             throw new Error ("Error when creating new Table");
         }
         await fetchData();
@@ -116,7 +116,7 @@ export async function addNewFlow(data) {
     }
 }
 
-export async function getTabelList() {
+export async function getTableList() {
     try {
         const res = await fetch(config.domain + config.endPoints.getAllTables, {
             method: config.postMethod,
@@ -223,9 +223,14 @@ const handleSettingsClick = ({event, flow, setAnchorEl, setCurrentFlow}) => {
     setCurrentFlow(flow);
 };
 
-function generateId() {
-    return Math.random().toString(16).substr(2, 8);
+function generateId(existingIds = []) {
+    let id;
+    do {
+        id = Math.random().toString(16).substr(2, 8);
+    } while (existingIds.includes(id));
+    return id;
 }
+
 
 async function createNewFlow(data, id, flowName) {
     const newFlow = {

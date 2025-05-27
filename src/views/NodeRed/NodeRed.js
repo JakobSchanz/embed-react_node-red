@@ -27,7 +27,7 @@ import CardBody from "components/Card/CardBody.js";
 import styles from "assets/jss/material-dashboard-react/views/nodeRedStyle.js";
 
 import { handleSettingsClose,  handleRename, handleDelete } from '../../backend/node-red/handleFunctionsFlowSettings'
-import { handleAddCustomNode, handleAddCategory, handleRebootNodeRed, handleAddFlow, addFlowFields, getTabelList, getExistingFlowData, addNewFlow } from '../../backend/node-red/settingsFunctions';
+import { handleAddCustomNode, handleAddCategory, handleRebootNodeRed, handleAddFlow, addFlowFields, getTableList, getExistingFlowData, addNewFlow } from '../../backend/node-red/settingsFunctions';
 
 const useStyles = makeStyles(styles);
 
@@ -39,28 +39,28 @@ const config = {
         },
         settingsArea: {
             title: "Settings",
-            flowNameLable: "Flow Name",
+            flowNameLabel: "Flow Name",
             addFlowButton: "Add Flow",
             addCategoryOption: "Add",
-            categoryLable: "Category",
+            categoryLabel: "Category",
             dialogField: {
                 title: "Add new Category",
-                textFieldLableNew: "new Category",
+                textFieldLabelNew: "new Category",
                 textFieldLabelColor: "Color (Optional)",
                 textFieldLabelIcon: "Icon (Optional)",
-                infoMessageColor: "Farbe im Hexcolor eingeben beispiel: #ffff",
-                infoMessageIcon: "From library fontawesome VERSION 4, example: fa-wrench: https://fontawesome.com/v4/icons/",
+                infoMessageColor: "Enter a color in hex format, e.g., #ffff",
+                infoMessageIcon: "Choose an icon from Font Awesome v4 (e.g., fa-wrench): https://fontawesome.com/v4/icons/",
                 cancelButton: "Cancel",
                 addButton: "Add",
             },
-            nameLable: "Node Name",
-            desLable: "Node Description",
+            nameLabel: "Node Name",
+            desLabel: "Node Description",
             addNodeButton: "Add Node",
             rebootNodeRedButton: "Reboot node-red",
         },
         flowSettings: {
             title: "Settings for:",
-            renameLable: "Edit Name",
+            renameLabel: "Edit Name",
             saveButton: "Save",
             deleteButton: "Delete",
         },
@@ -115,7 +115,7 @@ export default function NodeRed() {
     }, []);
 
     async function fetchData() {
-        const list = await getTabelList();
+        const list = await getTableList();
         setOptions(list);
     }
 
@@ -154,7 +154,7 @@ export default function NodeRed() {
                                             <div className={classes.basicStyleOne}>
                                                 <TextField
                                                     inputRef={flowNameRef}
-                                                    label={config.text.settingsArea.flowNameLable}
+                                                    label={config.text.settingsArea.flowNameLabel}
                                                     variant={config.design.variants.out}
                                                     size={config.design.sizes.sma}
                                                     InputProps={{
@@ -209,7 +209,7 @@ export default function NodeRed() {
                                                         option === "__add_new__" ? "Add" : option
                                                     }
                                                     renderInput={(params) => (
-                                                        <TextField {...params} label={config.text.settingsArea.categoryLable} variant={config.design.variants.out} />
+                                                        <TextField {...params} label={config.text.settingsArea.categoryLabel} variant={config.design.variants.out} />
                                                     )}
                                                 />      
                                                 <Dialog open={openDialog} onClose={() => setOpenDialog(false)}>
@@ -218,7 +218,7 @@ export default function NodeRed() {
                                                         <TextField
                                                             autoFocus
                                                             margin="dense"
-                                                            label={config.text.settingsArea.dialogField.textFieldLableNew}
+                                                            label={config.text.settingsArea.dialogField.textFieldLabelNew}
                                                             fullWidth
                                                             value={newOptionName}
                                                             onChange={(e) => setNewOptionName(e.target.value)}
@@ -227,7 +227,6 @@ export default function NodeRed() {
 
                                                     <DialogContent>
                                                         <TextField
-                                                            autoFocus
                                                             margin="dense"
                                                             label={config.text.settingsArea.dialogField.textFieldLabelColor}
                                                             fullWidth
@@ -248,7 +247,6 @@ export default function NodeRed() {
 
                                                     <DialogContent>
                                                         <TextField
-                                                            autoFocus
                                                             margin="dense"
                                                             label={config.text.settingsArea.dialogField.textFieldLabelIcon}
                                                             fullWidth
@@ -283,7 +281,7 @@ export default function NodeRed() {
                                                 
                                                 <TextField
                                                     inputRef={nodeNameRef}
-                                                    label={config.text.settingsArea.nameLable}
+                                                    label={config.text.settingsArea.nameLabel}
                                                     variant={config.design.variants.out}
                                                     size={config.design.sizes.sma}
                                                     InputProps={{
@@ -300,7 +298,7 @@ export default function NodeRed() {
 
                                                 <TextField
                                                     inputRef={nodeDesRef}
-                                                    label={config.text.settingsArea.desLable}
+                                                    label={config.text.settingsArea.desLabel}
                                                     variant={config.design.variants.out}
                                                     size={config.design.sizes.sma}
                                                     InputProps={{
@@ -384,7 +382,7 @@ export default function NodeRed() {
                     
                     <div style={{display: config.design.displayFlex}}>
                         <TextField
-                            label={config.text.flowSettings.renameLable}
+                            label={config.text.flowSettings.renameLabel}
                             fullWidth
                             defaultValue={currentFlow && currentFlow.label}
                             inputRef={renameRef}
