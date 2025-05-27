@@ -80,8 +80,6 @@ export async function handleAddCategory (newOptionName, newOptionColor, newOptio
             tableIcon: newOptionIcon
         };
         
-        console.log(newOptionName);
-
         const res = await fetch(config.domain + config.endPoints.createNewTable, {
             method: config.postMethod,
             headers: {
