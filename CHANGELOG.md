@@ -78,6 +78,9 @@ typescript                3.5.1   →    3.5.3
 ### Major style changes
 ### Deleted components
 ### Added components
+### Node-Red
+New tab called Node-Red added <br>
+Node-Red displays the information for this from: [https://github.com/JakobSchanz/node-red-self-host/](https://github.com/JakobSchanz/node-red-self-host/)
 ### Deleted dependencies
 ### Added dependencies
 - typescript@3.5.1 (To stop console warnings on install)

@@ -70,6 +70,10 @@ Quick start options:
 ## Documentation
 The documentation for the Material Dashboard React is hosted at our [website](https://demos.creative-tim.com/material-dashboard-react/#/documentation/tutorial).
 
+## Node-Red
+Node-Red opens in the Node-Red cleaner. <br>
+This can be used like any other Node-Red. Only the information is retrieved and displayed here. <br> 
+Information about the hosted Node-Red: [https://github.com/JakobSchanz/node-red-self-host/](https://github.com/JakobSchanz/node-red-self-host/)
 
 ## File Structure
 
