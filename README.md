@@ -73,7 +73,8 @@ The documentation for the Material Dashboard React is hosted at our [website](ht
 ## Node-Red
 Node-Red opens in the Node-Red cleaner. <br>
 This can be used like any other Node-Red. Only the information is retrieved and displayed here. <br> 
-Information about the hosted Node-Red: [https://github.com/JakobSchanz/node-red-self-host/](https://github.com/JakobSchanz/node-red-self-host/)
+Information about the hosted Node-Red: [https://github.com/JakobSchanz/node-red-self-host/](https://github.com/JakobSchanz/node-red-self-host/) <br>
+The Code for it is in file: `src\views\NodeRed\NodeRed.js` <br>
 
 ## File Structure
 
@@ -174,6 +175,8 @@ material-dashboard-react
         │   └── Icons.js
         ├── Maps
         │   └── Maps.js
+        ├── NodeRed
+        │   └── NodeRed.js
         ├── Notifications
         │   └── Notifications.js
         ├── RTLPage
