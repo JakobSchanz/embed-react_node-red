@@ -46,6 +46,9 @@ _Warnings might appear while doing an npm install - they do not affect the UI or
 - Renamed `assets/jss/material-dashboard-react/layouts/dashboardStyle.js` to `assets/jss/material-dashboard-react/layouts/adminStyle.js`
 ### Deleted components
 ### Added components
+### Node-Red
+New tab called Node-Red added <br>
+Node-Red displays the information for this from: [https://github.com/JakobSchanz/node-red-self-host/](https://github.com/JakobSchanz/node-red-self-host/)
 ### Deleted dependencies
 ### Added dependencies
 + gulp@4.0.2
