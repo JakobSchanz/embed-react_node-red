@@ -27,6 +27,7 @@ You can find the Github Repo here.
 * [Demo](#demo)
 * [Quick Start](#quick-start)
 * [Documentation](#documentation)
+* [Node-Red](##Node-Red)
 * [File Structure](#file-structure)
 * [Browser Support](#browser-support)
 * [Resources](#resources)
