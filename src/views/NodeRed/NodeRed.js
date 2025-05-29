@@ -109,7 +109,7 @@ export default function NodeRed() {
 
     useEffect(() => {
         const forceRefresh = false;
-        addNodeFlields({forceRefresh, existingFields, setFlows, setAnchorEl, setCurrentFlow});
+        addNodeFlields({forceRefresh, existingFields, setFlows });
     }, []);
 
     return (
@@ -268,6 +268,8 @@ export default function NodeRed() {
                                                             value,
                                                             nodeNameRef,
                                                             nodeDesRef,
+                                                            existingFields, 
+                                                            setFlows
                                                         })
                                                     }
                                                     size={config.design.sizes.med}
@@ -291,7 +293,6 @@ export default function NodeRed() {
                                 </Card>
                             </GridItem>
                         </GridContainer>
-
                         <GridContainer spacing={3} style={{ flexWrap: "wrap" }}>
                             {flows.map((flow) => flow)}
                         </GridContainer>

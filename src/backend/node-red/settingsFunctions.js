@@ -41,7 +41,7 @@ export async function handleRebootNodeRed () {
     }
 }
 
-export async function handleAddCustomNode ({ value, nodeNameRef, nodeDesRef }) { 
+export async function handleAddCustomNode ({ value, nodeNameRef, nodeDesRef, existingFields, setFlows }) { 
     try {
         if (nodeNameRef.current.value === "" || nodeDesRef.current.value === "" || value === null) {
             alert("all fields must be completed");
@@ -62,6 +62,9 @@ export async function handleAddCustomNode ({ value, nodeNameRef, nodeDesRef }) {
             body: JSON.stringify(payload)
         });
         const data = await res.json();
+
+        const forceRefresh = false
+        addNodeFlields({ forceRefresh, existingFields, setFlows });
     } catch (error) {
         console.error("Error in Function handleAddCustomNode: ", error.message);
     }
@@ -129,7 +132,7 @@ export async function getExistingNodesData() {
 }
 
 
-export async function addNodeFlields({forceRefresh = false, existingFields, setFlows, setAnchorEl, setCurrentFlow}) {
+export async function addNodeFlields({forceRefresh = false, existingFields, setFlows }) {
     try {
         const data = await getExistingNodesData();
         if (forceRefresh) {
@@ -137,7 +140,7 @@ export async function addNodeFlields({forceRefresh = false, existingFields, setF
             setFlows([]);
         }
         for (const flow of data) {
-            if (!existingFields.current.includes(flow)) {
+            if (!existingFields.current.includes(flow.name)) {
                 const newFlow = (
                     <GridItem
                         xs={config.flowFieldDesign.sizeAuto}
@@ -158,7 +161,7 @@ export async function addNodeFlields({forceRefresh = false, existingFields, setF
                         </Card>
                     </GridItem>
                 );
-                existingFields.current.push(flow.id);
+                existingFields.current.push(flow.name);
                 setFlows((prev) => [...prev, newFlow]);
             }
         }
