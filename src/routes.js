@@ -35,6 +35,7 @@ import Icons from "views/Icons/Icons.js";
 import Maps from "views/Maps/Maps.js";
 import NotificationsPage from "views/Notifications/Notifications.js";
 import NodeRed from "views/NodeRed/NodeRed.js"
+import NodeRedDirect from 'views/node-red-direct/nodeRedDirect.js'
 // core components/views for RTL layout
 import RTLPage from "views/RTLPage/RTLPage.js";
 
@@ -104,11 +105,19 @@ const dashboardRoutes = [
     layout: "/admin"
   },
   {
-    path: "/node-red",
-    name: "Node-Red",
+    path: "/add-node-red-nodes",
+    name: "Add Node-Red Nodes",
     rtlName: "نود-ريد",
     icon: AccountTreeIcon,
     component: NodeRed,
+    layout: "/admin"
+  },
+  {
+    path: "node-red",
+    name: "Node-Red",
+    rtlName: "نود-ريد",
+    icon: AccountTreeIcon,
+    component: NodeRedDirect,
     layout: "/admin"
   },
   {
