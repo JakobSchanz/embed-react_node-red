@@ -73,84 +73,8 @@ The documentation for the Material Dashboard React is hosted at our [website](ht
 
 ## Node-Red 
 
-Under the Node-RED tab, you'll find the control center for creating flow diagrams in Node-RED. <br>
-There is a Settings section where new flows can be added and custom nodes can be created. <br>
-All existing flows are displayed below the settings section. <br>
-Clicking on a flow name opens a new tab with the corresponding Node-RED flow. <br>
-Clicking on the settings icon opens configuration options for that specific flow. <br>
-
-When a new custom node is added, Node-RED **must be restarted** via the REBOOT NODE-RED button next to ADD NODE. <br>
-New categories will only appear in Node-RED once at least one node has been added to them.
-
-More Informations: [https://github.com/JakobSchanz/node-red-self-host/](https://github.com/JakobSchanz/node-red-self-host/)
-
----
-### Settings Section
-#### Add New Flow
-In the Flow Name input field, enter the name of the new flow. <br>
-Only after entering a name can you press the ADD FLOW button to create a new flow. <br>
-This triggers the creation of a new flow element and sends a request to the hosted Node-RED instance. <br>
-Endpoint to create a new flow: `/flows`
-
----
-#### Add New Node
-
-### Category
-This field allows you to select the **category** under which the node will appear in Node-RED. <br>
-It also determines in which database table the node is stored, and what color and icon it will have in Node-RED. <br>
-Clicking on Add opens a field where a new category and corresponding database table can be created. <br>
-The Name must be provided. This name is both the category name displayed in Node-RED and the name of the database table. <br>
-Color and icon are optional. If not specified, default values will be used. <br>
-Endpoint to create a new table/category: `db-api/crate-new-table` <br>
-Endpoint to list all existing tables/categories: `db-api/table-list`
-
-#### Color
-The color must be specified using a hex color code, e.g.: #47919e. <br>
-This will be the default color for all nodes in that category within Node-RED. <br>
-
-#### Icon
-Node-RED uses the FontAwesome icon library, version 4. <br>
-You can browse icons here: https://fontawesome.com/v4/icons/ <br>
-Important: The value must be formatted like fa-address-book, not fa fa-address-book. <br>
-
-#### Node Name
-Input field for the name of the custom node.
-
-#### Node Description
-Input field for the description of the custom node.
-
-#### Add Node Button
-Once a **category**, **name**, and **description** are provided, you can click the Add Node button. <br>
-This will insert the new node into the appropriate database table. <br>
-Endpoint: `db-api/crate-custom-node`
-
-#### Reboot Node-RED
-In order for the new node to be visible in Node-RED, the system must be restarted. <br>
-This can be done via the REBOOT NODE-RED button.
-Endpoint: restart-node-red
-
-### Flow Section
-All existing flows are displayed in this section. <br>
-Each flow has its own container with two buttons:
-- The first button shows the name of the flow and opens it in a new tab.
-- The second button is the Settings button, where flows can be renamed or deleted.
-
-### Node-RED File Structure
-
-#### Main Frontend Logic
-File: `src\views\NodeRed\NodeRed.js` <br>
-This file builds the general layout of the Node-RED page. <br>
-It uses styled components from:
-`src\assets\jss\material-dashboard-react\views\nodeRedStyle.js`
-
-#### Backend
-In the folder src\backend\node-red, there are two JavaScript files:
-
-`settingsFunctions.js`: Contains the logic for the settings section. <br>
-  It handles requests to the backend and creates React components such as new flows.
-
-`handleFunctionsFlowSettings.js`: Contains logic for flow settings. <br>
-It handles rename and delete requests for flows.
+This version is not finished!
+It works but has bugs and the code is not clean.
 
 ## File Structure
 

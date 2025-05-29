@@ -26,8 +26,7 @@ import CardBody from "components/Card/CardBody.js";
 // Styles
 import styles from "assets/jss/material-dashboard-react/views/nodeRedStyle.js";
 
-import { handleSettingsClose,  handleRename, handleDelete } from '../../backend/node-red/handleFunctionsFlowSettings'
-import { handleAddCustomNode, handleAddCategory, handleRebootNodeRed, handleAddFlow, addFlowFields, getTableList, getExistingFlowData, addNewFlow, getExistingNodesData } from '../../backend/node-red/settingsFunctions';
+import { handleAddCustomNode, handleAddCategory, handleRebootNodeRed, addNodeFlields, getTableList } from '../../backend/node-red/settingsFunctions';
 
 const useStyles = makeStyles(styles);
 
@@ -39,8 +38,6 @@ const config = {
         },
         settingsArea: {
             title: "Settings",
-            flowNameLabel: "Flow Name",
-            addFlowButton: "Add Flow",
             addCategoryOption: "Add",
             categoryLabel: "Category",
             dialogField: {
@@ -57,12 +54,6 @@ const config = {
             desLabel: "Node Description",
             addNodeButton: "Add Node",
             rebootNodeRedButton: "Reboot node-red",
-        },
-        flowSettings: {
-            title: "Settings for:",
-            renameLabel: "Edit Name",
-            saveButton: "Save",
-            deleteButton: "Delete",
         },
     },
     design: {
@@ -87,8 +78,6 @@ const config = {
 }
 
 export default function NodeRed() {
-    const flowNameRef = useRef();
-    const renameRef = useRef();
     const nodeNameRef = useRef();
     const nodeDesRef = useRef();
 
@@ -108,7 +97,6 @@ export default function NodeRed() {
     const customOptions = [...options, "__add_new__"];
 
     const open = Boolean(anchorEl);
-    const popoverId = open ? "settings-popover" : undefined;
 
     useEffect(() => {
         fetchData();
@@ -121,7 +109,7 @@ export default function NodeRed() {
 
     useEffect(() => {
         const forceRefresh = false;
-        addFlowFields({forceRefresh, existingFields, setFlows, setAnchorEl, setCurrentFlow});
+        addNodeFlields({forceRefresh, existingFields, setFlows, setAnchorEl, setCurrentFlow});
     }, []);
 
     return (
@@ -151,46 +139,6 @@ export default function NodeRed() {
                                         <div
                                             className={classes.basicStyleOne}
                                         >
-                                            <div className={classes.basicStyleOne}>
-                                                <TextField
-                                                    inputRef={flowNameRef}
-                                                    label={config.text.settingsArea.flowNameLabel}
-                                                    variant={config.design.variants.out}
-                                                    size={config.design.sizes.sma}
-                                                    InputProps={{
-                                                        style: {height: config.design.settingsArea.setHeight, flex: 1},
-                                                    }}
-                                                    style={{ marginRight: config.design.settingsArea.setMargin}}
-                                                    onKeyDown={(e) => {
-                                                        if (e.key === 'Enter') {
-                                                            handleAddFlow({
-                                                                existingFields,
-                                                                flowNameRef,
-                                                                setFlows,
-                                                                setAnchorEl,
-                                                                setCurrentFlow
-                                                            });
-                                                        }
-                                                    }}
-                                                />
-
-                                                <Button
-                                                    variant={config.design.variants.cont}
-                                                    color={config.design.colors.prim}
-                                                    onClick={() =>
-                                                        handleAddFlow({
-                                                            existingFields,
-                                                            flowNameRef,
-                                                            setFlows,
-                                                            setAnchorEl,
-                                                            setCurrentFlow
-                                                        })
-                                                    }
-                                                    size={config.design.sizes.med}
-                                                >
-                                                    {config.text.settingsArea.addFlowButton}
-                                                </Button>
-                                            </div>
                                             
                                             <div className={classes.settingsDiv}>
                                                 <Autocomplete
@@ -350,101 +298,6 @@ export default function NodeRed() {
                     </Card>
                 </GridItem>
             </GridContainer>
-
-            <Popover
-                id={popoverId}
-                open={open}
-                anchorEl={anchorEl}
-                anchorOrigin={{
-                    vertical: "bottom",
-                    horizontal: "left",
-                }}
-                transformOrigin={{
-                    vertical: "top",
-                    horizontal: "left",
-                }}
-            >
-                <div style={{ padding: "16px", minWidth: "200px" }}>
-                    <div style={{ display: config.design.displayFlex, justifyContent: "space-between" }}>
-                        <p>
-                            <strong>{config.text.flowSettings.title}</strong> {currentFlow && currentFlow.label}
-                        </p>
-
-                        <Button
-                            className={classes.settingsButton}
-                            variant={config.design.variants.cont}
-                            color={config.design.colors.prim}
-                            onClick={() => handleSettingsClose(setAnchorEl, setCurrentFlow)}
-                        >
-                            <CloseIcon />
-                        </Button>
-                    </div>
-                    
-                    <div style={{display: config.design.displayFlex}}>
-                        <TextField
-                            label={config.text.flowSettings.renameLabel}
-                            fullWidth
-                            defaultValue={currentFlow && currentFlow.label}
-                            inputRef={renameRef}
-                            onKeyDown={(e) => {
-                                if (e.key === 'Enter') {
-                                    handleRename({
-                                        renameRef,
-                                        currentFlow,
-                                        setAnchorEl,
-                                        setCurrentFlow,
-                                        getExistingFlowData,
-                                        addNewFlow,
-                                        addFlowFields,
-                                        existingFields, 
-                                        setFlows
-                                    })
-                                }
-                            }}
-                        />
-                        <Button
-                            style={{ marginTop: "12px", marginLeft: "7px" }}
-                            variant={config.design.variants.cont}
-                            color={config.design.colors.prim}
-                            onClick={() =>
-                                handleRename({
-                                    renameRef,
-                                    currentFlow,
-                                    setAnchorEl,
-                                    setCurrentFlow,
-                                    getExistingFlowData,
-                                    addNewFlow,
-                                    addFlowFields,
-                                    existingFields, 
-                                    setFlows
-                                })
-                            } 
-                        >
-                            {config.text.flowSettings.saveButton}
-                        </Button>
-                    </div>
-                    
-                    <Button
-                        style={{ marginTop: "12px", width: "100%" }}
-                        variant={config.design.variants.cont}
-                        color={config.design.colors.prim}
-                        onClick={() =>
-                            handleDelete({
-                                currentFlow,
-                                setAnchorEl,
-                                setCurrentFlow,
-                                getExistingFlowData,
-                                addNewFlow,
-                                addFlowFields,
-                                existingFields,
-                                setFlows
-                            })
-                        }
-                    >
-                        {config.text.flowSettings.deleteButton}
-                    </Button>
-                </div>
-            </Popover>
         </div>
     );
 }

@@ -3,13 +3,10 @@ import React from "react";
 import GridItem from "components/Grid/GridItem.js";
 import Card from "components/Card/Card.js";
 import CardBody from "components/Card/CardBody.js";
-import { Delete as DeleteIcon } from "@material-ui/icons";
-import { Button } from "@material-ui/core";
 
 const config = {
     domain: "http://localhost:8000/",
     postMethod: "POST",
-    flowType: "tab",
     endPoints: {
         restart: "restart-node-red",
         createCustomNodes: "db-api/crate-custom-node",
@@ -98,20 +95,6 @@ export async function handleAddCategory (newOptionName, newOptionColor, newOptio
     }
 }
 
-export async function addNewFlow(data) {
-    try {
-        await fetch(config.domain + config.endPoints.getAllFlows, {
-            method: config.postMethod,
-            headers: {
-            "Content-Type": "application/json",
-        },
-            body: JSON.stringify(data),
-        });
-    } catch (error) {
-        console.error("Error in Function addNewFlow: ", error.message);
-    }
-}
-
 export async function getTableList() {
     try {
         const res = await fetch(config.domain + config.endPoints.getAllTables, {
@@ -130,16 +113,6 @@ export async function getTableList() {
     }
 }
 
-export async function getExistingFlowData() {
-    try {
-        const res = await fetch(config.domain + config.endPoints.getAllFlows);
-        const data = await res.json();
-        return data;
-    } catch (error) {
-        console.error("Error in Function getExistingFlowData");
-    } 
-}
-
 export async function getExistingNodesData() {
     try {
         const res = await fetch(config.domain + config.endPoints.getAllNodes, {
@@ -151,33 +124,12 @@ export async function getExistingNodesData() {
         const data = await res.json();
         return data;
     } catch (error) {
-        console.error("Error in Function getExistingFlowData");
+        console.error("Error in Function getExistingNodesData");
     } 
 }
 
-export async function handleOpenFlow(flowID) {
-    window.open(`${config.domain}#flow/${flowID}`, "_blank");
-}
 
-export async function handleAddFlow({existingFields, flowNameRef, setFlows, setAnchorEl, setCurrentFlow}) {
-    try {
-        const data = await getExistingFlowData();
-        const flowName = flowNameRef.current.value;
-        const id = await generateId();
-
-        if (flowName === "") {
-            alert("Name incorect");
-            return;
-        }
-        await createNewFlow(data, id, flowName);
-        const forceRefresh = true;
-        await addFlowFields({forceRefresh, existingFields, setFlows, setAnchorEl, setCurrentFlow});
-    } catch (error) {
-        console.error("Error in function handleAddFlow: ", error.message);
-    }
-}
-
-export async function addFlowFields({forceRefresh = false, existingFields, setFlows, setAnchorEl, setCurrentFlow}) {
+export async function addNodeFlields({forceRefresh = false, existingFields, setFlows, setAnchorEl, setCurrentFlow}) {
     try {
         const data = await getExistingNodesData();
         if (forceRefresh) {
@@ -211,28 +163,6 @@ export async function addFlowFields({forceRefresh = false, existingFields, setFl
             }
         }
     } catch (error) {
-        console.error("Error in Function addFlowFields: ", error.message);
+        console.error("Error in Function addNodeFlields: ", error.message);
     }
-}
-
-function generateId(existingIds = []) {
-    let id;
-    do {
-        id = Math.random().toString(16).substr(2, 8);
-    } while (existingIds.includes(id));
-    return id;
-}
-
-
-async function createNewFlow(data, id, flowName) {
-    const newFlow = {
-        id: id,
-        type: config.flowType,
-        label: flowName,
-        disabled: false,
-        info: "",
-        env: [],
-    };
-    data.push(newFlow);
-    await addNewFlow(data);
 }
