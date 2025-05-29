@@ -3,7 +3,7 @@ import React from "react";
 import GridItem from "components/Grid/GridItem.js";
 import Card from "components/Card/Card.js";
 import CardBody from "components/Card/CardBody.js";
-import { Settings as SettingsIcon } from "@material-ui/icons";
+import { Delete as DeleteIcon } from "@material-ui/icons";
 import { Button } from "@material-ui/core";
 
 const config = {
@@ -16,6 +16,7 @@ const config = {
         createNewTable: "db-api/crate-new-table",
         getAllFlows: "flows",
         getAllTables: "db-api/table-list",
+        getAllNodes: "db-api/get-all-nodes",
     },
     flowFieldDesign: {
         sizeAuto: "auto",
@@ -64,9 +65,6 @@ export async function handleAddCustomNode ({ value, nodeNameRef, nodeDesRef }) {
             body: JSON.stringify(payload)
         });
         const data = await res.json();
-        if (data.status !== 200) {
-            throw new Error("Error when creating new Node");
-        }
     } catch (error) {
         console.error("Error in Function handleAddCustomNode: ", error.message);
     }
@@ -142,6 +140,21 @@ export async function getExistingFlowData() {
     } 
 }
 
+export async function getExistingNodesData() {
+    try {
+        const res = await fetch(config.domain + config.endPoints.getAllNodes, {
+            method: config.postMethod,
+            headers: {
+                "Content-Type": "application/json"
+            },
+        });
+        const data = await res.json();
+        return data;
+    } catch (error) {
+        console.error("Error in Function getExistingFlowData");
+    } 
+}
+
 export async function handleOpenFlow(flowID) {
     window.open(`${config.domain}#flow/${flowID}`, "_blank");
 }
@@ -166,14 +179,13 @@ export async function handleAddFlow({existingFields, flowNameRef, setFlows, setA
 
 export async function addFlowFields({forceRefresh = false, existingFields, setFlows, setAnchorEl, setCurrentFlow}) {
     try {
-        const data = await getExistingFlowData();
-        const tabs = data.filter((flow) => flow.type === config.flowType);
+        const data = await getExistingNodesData();
         if (forceRefresh) {
             existingFields.current = [];
             setFlows([]);
         }
-        for (const flow of tabs) {
-            if (!existingFields.current.includes(flow.id)) {
+        for (const flow of data) {
+            if (!existingFields.current.includes(flow)) {
                 const newFlow = (
                     <GridItem
                         xs={config.flowFieldDesign.sizeAuto}
@@ -186,22 +198,9 @@ export async function addFlowFields({forceRefresh = false, existingFields, setFl
                         <Card>
                             <CardBody>
                                 <div>
-                                    <Button
-                                        variant={config.flowFieldDesign.variantContained}
-                                        color={config.flowFieldDesign.colors.prim}
-                                        style={{ marginRight: "5px" }}
-                                        onClick={() => handleOpenFlow(flow.id)}
-                                    >
-                                        {flow.label}
-                                    </Button>
-
-                                    <Button
-                                        variant={config.flowFieldDesign.variantContained}
-                                        color={config.flowFieldDesign.colors.sec}
-                                        onClick={(e) => handleSettingsClick({event: e, flow, setAnchorEl, setCurrentFlow})} 
-                                    >
-                                        <SettingsIcon />
-                                    </Button>
+                                    <span style={{ marginRight: "5px" }}>
+                                        {flow.name}
+                                    </span>
                                 </div>
                             </CardBody>
                         </Card>
@@ -215,11 +214,6 @@ export async function addFlowFields({forceRefresh = false, existingFields, setFl
         console.error("Error in Function addFlowFields: ", error.message);
     }
 }
-
-const handleSettingsClick = ({event, flow, setAnchorEl, setCurrentFlow}) => {
-    setAnchorEl(event.currentTarget);
-    setCurrentFlow(flow);
-};
 
 function generateId(existingIds = []) {
     let id;

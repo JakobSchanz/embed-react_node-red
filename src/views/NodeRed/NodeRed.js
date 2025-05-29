@@ -27,7 +27,7 @@ import CardBody from "components/Card/CardBody.js";
 import styles from "assets/jss/material-dashboard-react/views/nodeRedStyle.js";
 
 import { handleSettingsClose,  handleRename, handleDelete } from '../../backend/node-red/handleFunctionsFlowSettings'
-import { handleAddCustomNode, handleAddCategory, handleRebootNodeRed, handleAddFlow, addFlowFields, getTableList, getExistingFlowData, addNewFlow } from '../../backend/node-red/settingsFunctions';
+import { handleAddCustomNode, handleAddCategory, handleRebootNodeRed, handleAddFlow, addFlowFields, getTableList, getExistingFlowData, addNewFlow, getExistingNodesData } from '../../backend/node-red/settingsFunctions';
 
 const useStyles = makeStyles(styles);
 

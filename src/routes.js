@@ -113,7 +113,7 @@ const dashboardRoutes = [
     layout: "/admin"
   },
   {
-    path: "node-red",
+    path: "/node-red",
     name: "Node-Red",
     rtlName: "نود-ريد",
     icon: AccountTreeIcon,
